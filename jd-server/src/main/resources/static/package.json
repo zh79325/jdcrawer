@@ -1,0 +1,21 @@
+{
+    "name": "angular-require",
+    "version": "1.0.0",
+    "description": "",
+    "main": "require-config.js",
+    "dependencies": {
+        "angular": "*",
+        "angular-amd": "*",
+        "angular-animate": "*",
+        "angular-sanitize": "*",
+        "angular-ui-router": "*",
+        "blueimp-md5": "*",
+        "jquery": "*",
+        "requirejs": "*",
+        "requirejs-plugins": "*",
+        "text": "requirejs/text"
+    },
+    "scripts": {},
+    "author": "",
+    "license": "ISC"
+}
