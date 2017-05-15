@@ -1,7 +1,8 @@
-define([], function () {
+define(['modules/module1/require-config'], function (config) {
    return {
-      "ctrl-folder": "controllers",
-      "tpl-folder": "views",
+      "require-config":config,
+      "ctrl-folder": "modules/module1/controllers",
+      "tpl-folder": "modules/module1/views",
       "routers": [{
          "name": "首页",
          "url": "/index",
