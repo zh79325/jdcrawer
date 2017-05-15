@@ -1,7 +1,7 @@
 define(['angularAMD', 'default-routers',
       "basic-tool", "angular", 'ui-router',
       'angular-animate', 'angular-sanitize',
-      'app-ui-view'
+      'app-ui-view','basic-theam'
    ],
    function (angularAMD, routers, $tools) {
       var app = angular.module('application', ['ui.router', 'ngAnimate', 'ngSanitize','application.core']);

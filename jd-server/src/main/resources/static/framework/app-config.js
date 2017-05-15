@@ -36,7 +36,12 @@ requirejs.config({
       //tools
       "basic-tool":'framework/tools',
       "md5":'node_modules/blueimp-md5/js/md5',
-      'app-ui-view':'framework/app-ui-view'
+      'app-ui-view':'framework/app-ui-view',
+       'basic-theam':'framework/basic-theam',
+
+       //Theam
+       'angular-ui-bootstrap':'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls',
+       'bootstrap-css':'node_modules/bootstrap/dist/css/bootstrap'
 
 
    },
@@ -46,6 +51,7 @@ requirejs.config({
       "ui-bootstrap": ["angular"],
       "angular-animate": ["angular"],
       "angular-sanitize": ["angular"],
+       'angular-ui-bootstrap':["angular",'css!bootstrap-css']
    },
    deps: ['app']
 });

@@ -1,21 +1,23 @@
 {
-    "name": "angular-require",
-    "version": "1.0.0",
-    "description": "",
-    "main": "require-config.js",
-    "dependencies": {
-        "angular": "*",
-        "angular-amd": "*",
-        "angular-animate": "*",
-        "angular-sanitize": "*",
-        "angular-ui-router": "*",
-        "blueimp-md5": "*",
-        "jquery": "*",
-        "requirejs": "*",
-        "requirejs-plugins": "*",
-        "text": "requirejs/text"
-    },
-    "scripts": {},
-    "author": "",
-    "license": "ISC"
+  "name": "angular-require",
+  "version": "1.0.0",
+  "description": "",
+  "main": "require-config.js",
+  "dependencies": {
+    "angular": "*",
+    "angular-amd": "*",
+    "angular-animate": "*",
+    "angular-sanitize": "*",
+    "angular-ui-bootstrap": "^2.5.0",
+    "angular-ui-router": "*",
+    "blueimp-md5": "*",
+    "bootstrap": "^3.3.7",
+    "jquery": "*",
+    "requirejs": "*",
+    "requirejs-plugins": "*",
+    "text": "requirejs/text"
+  },
+  "scripts": {},
+  "author": "",
+  "license": "ISC"
 }
