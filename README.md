@@ -24,3 +24,20 @@ build-helper:parse-version versions:set -DnewVersion=${parsedVersion.majorVersio
 https://react-bootstrap.github.io/getting-started.html
 
 
+# 开发工具列表
+### Intellij
+ ### 下载地址
+ ```$xslt
+ https://download.jetbrains.8686c.com/idea/ideaIU-2017.1.2.exe
+ 
+ ```
+ ### 学生免费账号注册
+ ```$xslt
+https://www.jetbrains.com/student/
+```
+
+### Atom
+```$xslt
+https://atom.io/
+```
+
