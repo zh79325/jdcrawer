@@ -15,14 +15,6 @@ build-helper:parse-version versions:set -DnewVersion=${parsedVersion.majorVersio
 ```
 
 
-# Reference
-## Back End
-### Spring-boot
-
-## Front End
-### react-bootstrap
-https://react-bootstrap.github.io/getting-started.html
-
 
 # 开发工具列表
 ### Intellij
