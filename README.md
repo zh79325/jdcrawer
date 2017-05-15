@@ -33,3 +33,8 @@ https://www.jetbrains.com/student/
 https://atom.io/
 ```
 
+# 环境要求
+### Java 1.8
+### Maven
+### NodeJS
+
