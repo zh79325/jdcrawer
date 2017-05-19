@@ -68,7 +68,7 @@ define(['angularAMD', 'default-routers',
                     loadController: ['$q', '$state',
                         function ($q, $state) {
                             var deferred = $q.defer();
-                            require([this.controllerPath], function () {
+                            require([item.controllerPath], function () {
                                 deferred.resolve();
                             });
                             return deferred.promise;
