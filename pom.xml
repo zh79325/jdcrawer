@@ -39,8 +39,6 @@
             </dependency>
 
 
-
-
             <!--Third Party-->
             <dependency>
                 <groupId>com.squareup.okhttp3</groupId>
@@ -69,7 +67,6 @@
             </dependency>
 
 
-
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-mongodb</artifactId>
@@ -95,13 +92,18 @@
                 <artifactId>spring-boot-starter-web</artifactId>
                 <version>${springboot.version}</version>
             </dependency>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-devtools</artifactId>
-                    <version>${springboot.version}</version>
-                    <optional>true</optional>
-                </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-devtools</artifactId>
+                <version>${springboot.version}</version>
+                <optional>true</optional>
+            </dependency>
 
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>1.0.31</version>
+            </dependency>
 
             <dependency>
                 <groupId>mysql</groupId>
@@ -109,6 +111,13 @@
                 <scope>runtime</scope>
                 <version>5.1.41</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>1.4.195</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>

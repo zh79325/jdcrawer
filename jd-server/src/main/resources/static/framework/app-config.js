@@ -46,8 +46,9 @@ requirejs.config({
 
    },
    shim: {
+       'angular': { exports: 'angular' },
       "angularAMD": ["angular"],
-      "ui-router": ["angular"],
+      "ui-router": ["angular",'angularAMD'],
       "ui-bootstrap": ["angular"],
       "angular-animate": ["angular"],
       "angular-sanitize": ["angular"],

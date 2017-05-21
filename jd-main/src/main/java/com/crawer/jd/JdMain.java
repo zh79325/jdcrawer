@@ -40,7 +40,7 @@ public class JdMain {
                             item.getRealPrice(),
                             item.getOriginalPrice(),
                             item.getDiscount(),
-                            item.itemUrl()));
+                            item.getItemUrl()));
                     buyItem=item;
                     break;
                 }

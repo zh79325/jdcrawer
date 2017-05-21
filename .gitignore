@@ -186,3 +186,4 @@ nginx-1.9.9/logs/*
 nginx-1.9.9/temp/*
 
 dependency-reduced-pom.xml
+storage

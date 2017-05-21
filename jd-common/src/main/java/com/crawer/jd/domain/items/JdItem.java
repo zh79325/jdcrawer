@@ -101,9 +101,19 @@ public class JdItem {
         return discount;
     }
 
-    public String itemUrl(){
+    public String getItemUrl(){
         String url=String.format("http://item.jd.com/%s.html",getId());
         return url;
+    }
+
+    public double getRateNum(){
+        double rateNum=1000;
+        try{
+            rateNum=Double.parseDouble(rate.split("折")[0]);
+        }catch (Exception ex){
+
+        }
+        return rateNum;
     }
 
     public boolean canMiaoSha() {

@@ -14,6 +14,12 @@ define(['modules/module1/require-config'], function (config) {
                "template": "index/test.html"
             }
          }
+      },{
+         "name": "秒杀商品页",
+         "url": "/items",
+         key:'items',
+         "controller": "JDItemCtrl",
+         "template": "JDItem.html",
       }]
    }
 })
