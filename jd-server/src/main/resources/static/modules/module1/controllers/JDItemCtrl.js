@@ -1,11 +1,10 @@
-define(['app'], function (app) {
+define(['app','app-modal'], function (app) {
    app.controller('JDItemCtrl', function ($scope, $http) {
-      $scope.itemFilter = {};
+      $scope.itemFilter = {maxRealPrice:'1'};
       $http.get("api/items")
          .then(function (response) {
             $scope.groups = response.data;
             $scope.groups[0].isCollapsed = true;
-            console.log($scope.groups);
          });
 
       $scope.filterByPrice = function (item) {

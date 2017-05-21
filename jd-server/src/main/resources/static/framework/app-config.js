@@ -26,33 +26,36 @@ requirejs.config({
       'angular-sanitize': "node_modules/angular-sanitize/angular-sanitize",
       'jquery': "node_modules/jquery/dist/jquery",
 
-      'default-config':'configs/modules',
-      "default-routers":'routers/routers',
+      'default-config': 'configs/modules',
+      "default-routers": 'routers/routers',
 
       //Main App
-      'app':'framework/application',
+      'app': 'framework/application',
 
 
       //tools
-      "basic-tool":'framework/tools',
-      "md5":'node_modules/blueimp-md5/js/md5',
-      'app-ui-view':'framework/app-ui-view',
-       'basic-theam':'framework/basic-theam',
+      "basic-tool": 'framework/tools',
+      "md5": 'node_modules/blueimp-md5/js/md5',
+      'app-ui-view': 'framework/app-ui-view',
+      'basic-theam': 'framework/basic-theam',
+      'app-modal': 'framework/app-modal',
 
-       //Theam
-       'angular-ui-bootstrap':'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls',
-       'bootstrap-css':'node_modules/bootstrap/dist/css/bootstrap'
+      //Theam
+      'angular-ui-bootstrap': 'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls',
+      'bootstrap-css': 'node_modules/bootstrap/dist/css/bootstrap'
 
 
    },
    shim: {
-       'angular': { exports: 'angular' },
+      'angular': {
+         exports: 'angular'
+      },
       "angularAMD": ["angular"],
-      "ui-router": ["angular",'angularAMD'],
+      "ui-router": ["angular", 'angularAMD'],
       "ui-bootstrap": ["angular"],
       "angular-animate": ["angular"],
       "angular-sanitize": ["angular"],
-       'angular-ui-bootstrap':["angular",'css!bootstrap-css']
+      'angular-ui-bootstrap': ["angular", 'css!bootstrap-css']
    },
    deps: ['app']
 });
