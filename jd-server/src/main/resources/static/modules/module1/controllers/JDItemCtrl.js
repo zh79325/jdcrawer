@@ -11,7 +11,7 @@ define(['app', 'app-modal'], function (app) {
          $http.post("api/buy/" + item.id)
             .then(function () {
                item.buying = false;
-               toaster.pop('info', "下单成功", item.name + "下单成功");
+               toaster.pop('info', "下单成功", item.name + "下单成功,请前往京东付款页面付钱");
             });
       }
       $scope.filterByPrice = function (item) {
