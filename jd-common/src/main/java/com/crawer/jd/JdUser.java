@@ -26,16 +26,32 @@ import java.util.regex.Pattern;
 public class JdUser {
     String identity;
     File qrCode;
-    String userName;
     OkHttpClient client;
     Headers _headers;
     JdCookieJar cookieJar;
     boolean loginSuccess;
 
     String eid;
-    String uid;
     String riskId;
     String fp;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    private String nickName;
+    private String imgUrl;
+    private String userId;
+
+
 
     public boolean isLoginSuccess() {
         return loginSuccess;
@@ -58,7 +74,6 @@ public class JdUser {
      */
     public JdUser(String userName) {
         identity = UUID.randomUUID().toString();
-        this.userName = userName;
         cookieJar = new JdCookieJar();
         client = new OkHttpClient.Builder()
                 .cookieJar(cookieJar)
@@ -71,6 +86,20 @@ public class JdUser {
                 .add("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4")
                 .add("Connection", "keep-alive")
                 .build();
+    }
+
+    public void getUserInfo() throws IOException {
+        String url=String.format("https://passport.jd.com/user/petName/getUserInfoForMiniJd.action?callback=&_=%d",new Date().getTime());
+        Headers headers = _headers.newBuilder()
+                .add("Host", JdConfig.LOGIN_INDEX.getHost())
+                .add("Referer", "https://www.jd.com/")
+                .build();
+        String js=getResult(url,headers,null);
+        String json=js.substring(1,js.length()-1);
+        JSONObject jsonObject=JSONObject.parseObject(json);
+        this.nickName=jsonObject.getString("nickName");
+        this.imgUrl=jsonObject.getString("imgUrl");
+        this.userId=jsonObject.getString("realName");
     }
 
     public JdUser() {
@@ -113,6 +142,7 @@ public class JdUser {
         validateToken(ticket);
         callBack.logInResult(true);
         loginSuccess = true;
+        getUserInfo();
         return true;
     }
 

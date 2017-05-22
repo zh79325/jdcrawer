@@ -1,5 +1,7 @@
 package com.crawer.jd.controllers;
 
+import com.crawer.jd.JdUser;
+
 /**
  * Author     : zh_zhou@Ctrip.com
  * Copyright  : Ctrip Copyright (c) 2017
@@ -10,6 +12,45 @@ package com.crawer.jd.controllers;
 public class UserIdentity {
     String identity;
     boolean logInSuccess;
+    private String nickName;
+    private String imgUrl;
+    private String userId;
+
+    public UserIdentity(){
+
+    }
+
+    public UserIdentity(JdUser user){
+        identity=user.getIdentity();
+        logInSuccess=user.isLoginSuccess();
+        nickName=user.getNickName();
+        imgUrl=user.getImgUrl();
+        userId=user.getUserId();
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public boolean isLogInSuccess() {
         return logInSuccess;
