@@ -1,4 +1,4 @@
-function invokeItem(userAgent,language) {
+function invokeItem(riskId,userAgent,language) {
     var navigator={
         'userAgent':userAgent,
         'language':language
@@ -11,9 +11,19 @@ function invokeItem(userAgent,language) {
         return sss.prototype.getData();
         ;
     };
+    var fp=getFingureEncrypted();
+    var t={
+        fp: fp,
+        o: "passport.com.crawer.jd.com/new/login.aspx",
+        oid: "",
+        p: "s",
+        pin: "",
+        t: riskId
+    };
     var r={
-        encrypted:getFingureEncrypted(),
-        raw:getFingure()
+        fp:fp,
+        g:JSON.stringify(getFingure()),
+        a:JSON.stringify(t)
     };
     return r;
 }

@@ -1,7 +1,7 @@
-package com.crawer.jd;
+package com.crawer.jd.script;
 
+import com.sun.script.javascript.RhinoScriptEngine;
 import org.apache.commons.io.IOUtils;
-import sun.org.mozilla.javascript.internal.NativeObject;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -28,14 +28,7 @@ public class EncryptScript {
 
 
     public static void main(String[] args) throws ScriptException, NoSuchMethodException, IOException {
-        Object c = getFingure("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.109 Safari/537.36");
-        NativeObject obj = (NativeObject) c;
-
-        for (Map.Entry<Object, Object> entry : obj.entrySet()) {
-            String key = (String) entry.getKey();
-            Object value = entry.getValue();
-            System.out.println(key);
-        }
+        Object c = getFingure("aaa","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.109 Safari/537.36");
 
 
     }
@@ -95,15 +88,15 @@ public class EncryptScript {
         return key;
     }
 
-    static Invocable FingerInvoke = null;
+    static RhinoScriptEngine FingerInvoke = null;
 
 
-    static Object getFingure(String userAgent) throws ScriptException, IOException, NoSuchMethodException {
+    public static Map<String,String> getFingure(String riskId,String userAgent) throws ScriptException, IOException, NoSuchMethodException {
         Invocable invoke = loadFingureEngin();
-        return invoke.invokeFunction("invokeItem", userAgent, "zh-CN");
+        return (Map<String, String>) invoke.invokeFunction("invokeItem", riskId,userAgent, "zh-CN");
     }
 
-    private static Invocable loadFingureEngin() throws IOException, ScriptException {
+    private static RhinoScriptEngine loadFingureEngin() throws IOException, ScriptException {
         if (FingerInvoke == null) {
             String fingerScript = loadResource("JdJrTdRiskFinger.js");
             String invokeScript = loadResource("invokeRiskFingerScript.js");
@@ -111,7 +104,7 @@ public class EncryptScript {
             ScriptEngine engine = manager.getEngineByName("javascript");
             engine.eval(fingerScript);
             engine.eval(invokeScript);
-            FingerInvoke = (Invocable) engine;
+            FingerInvoke = (RhinoScriptEngine) engine;
             ;
         }
         return FingerInvoke;

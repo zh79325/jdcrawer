@@ -5,6 +5,7 @@ import com.crawer.jd.UserLoginCallBack;
 import com.crawer.jd.domain.items.JdItem;
 import org.springframework.stereotype.Service;
 
+import javax.script.ScriptException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class JdUserService {
         return userMap.get(key);
     }
 
-    public JdUser loginByQrCode(String key) throws IOException {
+    public JdUser loginByQrCode(String key) throws IOException, ScriptException, NoSuchMethodException {
         final JdUser user = getByKey(key);
         user.loadLogInQrCode();
         new Thread(new Runnable() {

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
+import javax.script.ScriptException;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class JdUserController {
     JdUserService userService;
 
     @RequestMapping(value = "/newLogIn", method = RequestMethod.GET)
-    UserIdentity newUserLogIn() throws IOException {
+    UserIdentity newUserLogIn() throws IOException, ScriptException, NoSuchMethodException {
         JdUser user = userService.getNewUser();
         user = userService.loginByQrCode(user.getIdentity());
         UserIdentity identity = new UserIdentity();

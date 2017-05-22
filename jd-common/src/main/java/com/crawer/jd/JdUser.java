@@ -3,14 +3,18 @@ package com.crawer.jd;
 import com.alibaba.fastjson.JSONObject;
 import com.crawer.jd.domain.items.JdItem;
 import com.crawer.jd.http.JdCookieJar;
+import com.crawer.jd.script.EncryptScript;
 import okhttp3.*;
 import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import javax.script.ScriptException;
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Author     : zh_zhou@Ctrip.com
@@ -30,6 +34,7 @@ public class JdUser {
 
     String eid;
     String uid;
+    String riskId;
     String fp;
 
     public boolean isLoginSuccess() {
@@ -52,7 +57,7 @@ public class JdUser {
      *                 'Connection' : 'keep-alive',
      */
     public JdUser(String userName) {
-        identity=UUID.randomUUID().toString();
+        identity = UUID.randomUUID().toString();
         this.userName = userName;
         cookieJar = new JdCookieJar();
         client = new OkHttpClient.Builder()
@@ -77,18 +82,20 @@ public class JdUser {
     }
 
 
-    public  void loadLogInQrCode() throws IOException {
+    public void loadLogInQrCode() throws IOException, ScriptException, NoSuchMethodException {
         preLogIn();
         qrCode = loadQrCode();
     }
-    int MAX_SLEEP=1000*60;
-    int sleepTime=0;
-    int sleepIntevarl=1000;
+
+    int MAX_SLEEP = 1000 * 60;
+    int sleepTime = 0;
+    int sleepIntevarl = 1000;
+
     public boolean waitToScanQrCode(UserLoginCallBack callBack) throws IOException {
         String ticket = null;
         while (true) {
-            sleepTime+=sleepIntevarl;
-            if(sleepTime>MAX_SLEEP){
+            sleepTime += sleepIntevarl;
+            if (sleepTime > MAX_SLEEP) {
                 callBack.logInResult(false);
                 return false;
             }
@@ -105,12 +112,12 @@ public class JdUser {
         }
         validateToken(ticket);
         callBack.logInResult(true);
-        loginSuccess=true;
+        loginSuccess = true;
         return true;
     }
 
-    public boolean logIn(String userName,String password) throws IOException {
-        Document doc=preLogIn();
+    public boolean logIn(String userName, String password) throws IOException, ScriptException, NoSuchMethodException {
+        Document doc = preLogIn();
         return true;
     }
 
@@ -128,6 +135,7 @@ public class JdUser {
                 .build();
         return true;
     }
+
 
     String checkScanResult(String token) throws IOException {
         Headers headers = _headers.newBuilder()
@@ -212,14 +220,56 @@ public class JdUser {
         return file;
     }
 
-    Document preLogIn() throws IOException {
-        String html=  getResult(JdConfig.LOGIN_INDEX.url, null, null);
+    String getRiskId() throws IOException {
+        String url = String.format("https://payrisk.jd.com/y.html?v=%f&o=passport.com.crawer.jd.com/new/login.aspx", new Random().nextDouble());
+        String html = getResult(url, null, null);
+
+        Pattern p = Pattern.compile("'(.+?)'");
+        Matcher m = p.matcher(html);
+        m.find();
+        String jd_risk_token_id = m.group(1);
+        return jd_risk_token_id;
+    }
+
+    Document preLogIn() throws IOException, ScriptException, NoSuchMethodException {
+        String html = getResult(JdConfig.LOGIN_INDEX.url, null, null);
         Document doc = Jsoup.parse(html);
-        Elements eid = doc.select("#eid");
-        Elements fp = doc.select("#fp");
-        this.eid=eid.val();
-        this.fp=fp.val();
+        this.riskId = getRiskId();
+        Map<String, String> fpMap = getFingure();
+        this.fp = fpMap.get("fp");
+        this.eid = getEid(fpMap.get("g"), fpMap.get("a"));
         return doc;
+    }
+
+    private String getEid(String g, String a) throws IOException, ScriptException, NoSuchMethodException {
+        String encryptKey = getEncryptKey();
+        g = EncryptScript.encrypt(g, encryptKey);
+        a = EncryptScript.encrypt(g, encryptKey);
+        String url = String.format("http://payrisk.jd.com/fcf.html?g=%s&a=%s", g, a);
+        String txt = getResult(url, null, null);
+        return txt;
+    }
+
+    private String getEncryptKey() throws IOException, ScriptException {
+        String url = "https://payrisk.jd.com/js/td.js";
+        String js = getResult(url, null, null);
+        String key = EncryptScript.parseEncryptKey(js);
+        return key;
+    }
+
+    Map<String, String> getFingure() {
+        Map<String, String> r = new HashMap<>();
+        try {
+            r =  EncryptScript.getFingure(riskId, _headers.get("User-Agent"));
+        } catch (ScriptException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+        return r;
     }
 
 
@@ -232,29 +282,29 @@ public class JdUser {
         String html = getResult(url, headers, null);
         Document doc = Jsoup.parse(html);
         Elements tags = doc.select("a#InitCartUrl");
-        String addToCart ="https:"+ tags.attr("href");
+        String addToCart = "https:" + tags.attr("href");
         headers = _headers.newBuilder()
                 .removeAll("Accept-Encoding")
                 .add("Referer", url)
                 .build();
-        get(addToCart,headers,null);
+        get(addToCart, headers, null);
         orderInfo(item);
     }
 
     void orderInfo(JdItem item) throws IOException {
-        Map<String,String> params=new HashMap<>();
-        params.put("rid",new Date().getTime()+"");
-        String url="http://trade.jd.com/shopping/order/getOrderInfo.action";
+        Map<String, String> params = new HashMap<>();
+        params.put("rid", new Date().getTime() + "");
+        String url = "http://trade.jd.com/shopping/order/getOrderInfo.action";
         String html = getResult(url, null, params);
         Document doc = Jsoup.parse(html);
 
         Elements trackid = doc.select("#TrackID");
         Elements fp = doc.select("#fp");
-        String trackidStr=cookieJar.getValue("TrackID");
+        String trackidStr = cookieJar.getValue("TrackID");
         System.out.println(trackidStr);
     }
 
-    void subMitOrder(JdItem item){
+    void subMitOrder(JdItem item) {
 
     }
 
