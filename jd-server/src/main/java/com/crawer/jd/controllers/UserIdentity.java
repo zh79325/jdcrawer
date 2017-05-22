@@ -9,6 +9,15 @@ package com.crawer.jd.controllers;
  */
 public class UserIdentity {
     String identity;
+    boolean logInSuccess;
+
+    public boolean isLogInSuccess() {
+        return logInSuccess;
+    }
+
+    public void setLogInSuccess(boolean logInSuccess) {
+        this.logInSuccess = logInSuccess;
+    }
 
     public String getIdentity() {
         return identity;

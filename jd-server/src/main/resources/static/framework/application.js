@@ -4,7 +4,7 @@ define(['angularAMD', 'default-routers',
       'app-ui-view', 'basic-theam'
    ],
    function (angularAMD, routers, $tools) {
-      var app = angular.module('application', ['ui.router', 'ngAnimate', 'ngSanitize', 'application.core','ui.bootstrap']);
+      var app = angular.module('application', ['ui.router', 'ngAnimate', 'ngSanitize', 'application.core','ui.bootstrap','toaster']);
       var loadFiles = function (folder, files, success) {
          var targets = [];
          for (var i = 0; i < files.length; i++) {

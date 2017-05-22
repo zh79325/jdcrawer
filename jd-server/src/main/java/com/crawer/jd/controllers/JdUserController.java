@@ -51,4 +51,13 @@ public class JdUserController {
         }
 
     }
+
+    @RequestMapping(value = "/logInStatus/{identity}", method = RequestMethod.GET)
+    public UserIdentity logInStatus(@PathVariable("identity") String identityKey) throws Exception {
+        JdUser user = userService.getByKey(identityKey);
+        UserIdentity identity = new UserIdentity();
+        identity.setIdentity(user.getIdentity());
+        identity.setLogInSuccess(user.isLoginSuccess());
+        return identity;
+    }
 }

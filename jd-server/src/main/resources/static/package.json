@@ -10,6 +10,7 @@
     "angular-sanitize": "*",
     "angular-ui-bootstrap": "^2.5.0",
     "angular-ui-router": "*",
+    "angularjs-toaster": "^2.1.0",
     "blueimp-md5": "*",
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",

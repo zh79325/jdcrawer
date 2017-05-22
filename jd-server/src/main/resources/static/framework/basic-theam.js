@@ -3,5 +3,6 @@
  */
 define([
     'angular-ui-bootstrap',
-    'css!font-awesome'
+    'css!font-awesome',
+    'angular-toaster'
 ])

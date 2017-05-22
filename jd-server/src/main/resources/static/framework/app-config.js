@@ -43,7 +43,11 @@ requirejs.config({
       //Theam
       'angular-ui-bootstrap': 'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls',
       'bootstrap-css': 'node_modules/bootstrap/dist/css/bootstrap',
-      'font-awesome':'node_modules/font-awesome/css/font-awesome'
+      'font-awesome':'node_modules/font-awesome/css/font-awesome',
+
+      //Others
+      "angular-toaster": "node_modules/angularjs-toaster/toaster",
+      "angular-toaster-css": "node_modules/angularjs-toaster/toaster",
 
    },
    shim: {
@@ -54,6 +58,7 @@ requirejs.config({
       "ui-router": ["angular", 'angularAMD'],
       "ui-bootstrap": ["angular"],
       "angular-animate": ["angular"],
+      "angular-toaster":["angular","angular-animate","css!angular-toaster-css"],
       "angular-sanitize": ["angular"],
       'angular-ui-bootstrap': ["angular", 'css!bootstrap-css']
    },

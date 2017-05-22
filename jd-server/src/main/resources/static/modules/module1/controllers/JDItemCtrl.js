@@ -1,5 +1,5 @@
 define(['app', 'app-modal'], function (app) {
-   app.controller('JDItemCtrl', function ($scope, $http) {
+   app.controller('JDItemCtrl', function ($scope, $http, toaster) {
       $scope.itemFilter = {};
       $http.get("api/items")
          .then(function (response) {
@@ -7,7 +7,12 @@ define(['app', 'app-modal'], function (app) {
             $scope.groups[0].isCollapsed = true;
          });
       $scope.buy = function (item) {
-         $http.post("api/buy/" + item.id);
+         item.buying = true;
+         $http.post("api/buy/" + item.id)
+            .then(function () {
+               item.buying = false;
+               toaster.pop('info', "下单成功", item.name + "下单成功");
+            });
       }
       $scope.filterByPrice = function (item) {
          var itemFilter = $scope.itemFilter;

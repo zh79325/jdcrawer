@@ -38,7 +38,7 @@
 <br/>
 <input placeholder="请输入关键字过滤" class="form-control" ng-model="itemFilter.filter"/>
 <br/>
-<a class="btn btn-primary" ng-click="reload()">Click</a>
+<!-- <a class="btn btn-primary" ng-click="reload()">Click</a> -->
 <uib-tabset >
     <uib-tab ng-repeat="group in groups">
         <uib-tab-heading>
@@ -57,7 +57,10 @@
                 <label class="label label-info">{{item.rate}}</label>
                 <label class="label label-info">秒杀价:{{item.realPrice}}</label>
                 <label class="label label-info">原价:{{item.originalPrice}}</label>
-                <a class="btn btn-primary" ng-click="buy(item)">Buy</a>
+                <a class="btn btn-primary" ng-click="buy(item)">
+                 <i class="fa fa-spinner fa-pulse" ng-if="item.buying"></i>
+                 Buy
+                </a>
             </div>
             <div ng-repeat-end class="row" ng-if="  $index%4==3"></div>
 
