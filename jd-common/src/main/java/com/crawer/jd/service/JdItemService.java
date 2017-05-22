@@ -122,7 +122,7 @@ public class JdItemService {
     }
 
 
-    public static boolean canBuy(JdItem item) throws IOException {
+    public static boolean canBuyWithMiaoShaPrice(JdItem item) throws IOException {
         if(!item.canMiaoSha()){
             return false;
         }

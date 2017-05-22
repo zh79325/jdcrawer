@@ -42,8 +42,8 @@ requirejs.config({
 
       //Theam
       'angular-ui-bootstrap': 'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls',
-      'bootstrap-css': 'node_modules/bootstrap/dist/css/bootstrap'
-
+      'bootstrap-css': 'node_modules/bootstrap/dist/css/bootstrap',
+      'font-awesome':'node_modules/font-awesome/css/font-awesome'
 
    },
    shim: {

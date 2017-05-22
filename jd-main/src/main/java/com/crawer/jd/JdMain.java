@@ -34,7 +34,7 @@ public class JdMain {
                 if(!"2978987".equals(item.getId())){
                     continue;
                 }
-                if(JdItemService.canBuy(item)&&"2978987".equals(item.getId())){
+                if(JdItemService.canBuyWithMiaoShaPrice(item)&&"2978987".equals(item.getId())){
                     System.out.println(String.format("%s(%f/%f) %s => %s",
                             item.getName(),
                             item.getRealPrice(),

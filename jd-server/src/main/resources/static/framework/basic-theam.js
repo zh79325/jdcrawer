@@ -3,4 +3,5 @@
  */
 define([
     'angular-ui-bootstrap',
+    'css!font-awesome'
 ])

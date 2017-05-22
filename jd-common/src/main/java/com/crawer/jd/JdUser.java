@@ -12,8 +12,6 @@ import org.jsoup.select.Elements;
 import java.io.*;
 import java.util.*;
 
-import static java.awt.Desktop.getDesktop;
-
 /**
  * Author     : zh_zhou@Ctrip.com
  * Copyright  : Ctrip Copyright (c) 2017
@@ -22,10 +20,29 @@ import static java.awt.Desktop.getDesktop;
  * Description:
  */
 public class JdUser {
+    String identity;
+    File qrCode;
     String userName;
     OkHttpClient client;
     Headers _headers;
     JdCookieJar cookieJar;
+    boolean loginSuccess;
+
+    String eid;
+    String uid;
+    String fp;
+
+    public boolean isLoginSuccess() {
+        return loginSuccess;
+    }
+
+    public void setLoginSuccess(boolean loginSuccess) {
+        this.loginSuccess = loginSuccess;
+    }
+
+    public File getQrCode() {
+        return qrCode;
+    }
 
     /**
      * @param userName 'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
@@ -35,6 +52,7 @@ public class JdUser {
      *                 'Connection' : 'keep-alive',
      */
     public JdUser(String userName) {
+        identity=UUID.randomUUID().toString();
         this.userName = userName;
         cookieJar = new JdCookieJar();
         client = new OkHttpClient.Builder()
@@ -43,7 +61,7 @@ public class JdUser {
         _headers = new Headers.Builder()
                 .add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.109 Safari/537.36")
                 .add("ContentType", "text/html; charset=utf-8")
-                .add("Accept-Encoding", "gzip, deflate, sdch")
+//                .add("Accept-Encoding", "gzip, deflate, sdch")
                 .add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
                 .add("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4")
                 .add("Connection", "keep-alive")
@@ -54,34 +72,45 @@ public class JdUser {
         this(null);
     }
 
-    public boolean logIn() throws IOException {
+    public String getIdentity() {
+        return identity;
+    }
+
+
+    public  void loadLogInQrCode() throws IOException {
         preLogIn();
-        File qrCode = loadQrCode();
-        getDesktop().open(qrCode);
-        System.out.println("等待扫码登录");
+        qrCode = loadQrCode();
+    }
+    int MAX_SLEEP=1000*60;
+    int sleepTime=0;
+    int sleepIntevarl=1000;
+    public boolean waitToScanQrCode(UserLoginCallBack callBack) throws IOException {
         String ticket = null;
         while (true) {
+            sleepTime+=sleepIntevarl;
+            if(sleepTime>MAX_SLEEP){
+                callBack.logInResult(false);
+                return false;
+            }
             try {
-                Thread.sleep(1000);
+                Thread.sleep(sleepIntevarl);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             String token = cookieJar.getValue("wlfstk_smdl");
             ticket = checkScanResult(token);
-
             if (ticket != null) {
                 break;
             }
         }
         validateToken(ticket);
+        callBack.logInResult(true);
+        loginSuccess=true;
         return true;
     }
 
     public boolean logIn(String userName,String password) throws IOException {
-        Response response=preLogIn();
-        String html=response.body().string();
-        Document doc = Jsoup.parse(html);
-
+        Document doc=preLogIn();
         return true;
     }
 
@@ -115,10 +144,7 @@ public class JdUser {
         params.put("token", token);
         params.put("_", new Date().getTime() + "");
         String result = getResult(JdConfig.QR_CODE_CHECK.url, headers, params);
-
-
         System.out.println(result);
-
         int n1 = result.indexOf("(");
         int n2 = result.indexOf(")");
         if (n1 < 0 || n2 < 0) {
@@ -186,12 +212,18 @@ public class JdUser {
         return file;
     }
 
-    Response preLogIn() throws IOException {
-        Response response = get(JdConfig.LOGIN_INDEX.url, null, null);
-        return response;
+    Document preLogIn() throws IOException {
+        String html=  getResult(JdConfig.LOGIN_INDEX.url, null, null);
+        Document doc = Jsoup.parse(html);
+        Elements eid = doc.select("#eid");
+        Elements fp = doc.select("#fp");
+        this.eid=eid.val();
+        this.fp=fp.val();
+        return doc;
     }
 
-    void miaoSha(JdItem item) throws IOException {
+
+    void addToCart(JdItem item) throws IOException {
         Headers headers = _headers.newBuilder()
                 .removeAll("Accept-Encoding")
                 .add("Referer", JdConfig.MIAO_SHA_INDEX.getUrl())
@@ -206,6 +238,28 @@ public class JdUser {
                 .add("Referer", url)
                 .build();
         get(addToCart,headers,null);
+        orderInfo(item);
     }
 
+    void orderInfo(JdItem item) throws IOException {
+        Map<String,String> params=new HashMap<>();
+        params.put("rid",new Date().getTime()+"");
+        String url="http://trade.jd.com/shopping/order/getOrderInfo.action";
+        String html = getResult(url, null, params);
+        Document doc = Jsoup.parse(html);
+
+        Elements trackid = doc.select("#TrackID");
+        Elements fp = doc.select("#fp");
+        String trackidStr=cookieJar.getValue("TrackID");
+        System.out.println(trackidStr);
+    }
+
+    void subMitOrder(JdItem item){
+
+    }
+
+
+    public void buy(JdItem item) throws IOException {
+        addToCart(item);
+    }
 }

@@ -12,7 +12,14 @@
         登录京东账号
     </h3>
 </div>
-<div class="modal-body"></div>
+<div class="modal-body">
+    <h1 ng-if="!data" class="text-center">
+        <i class="fa fa-spinner fa-pulse"></i>
+    </h1>
+    <div class="row text-center" ng-if="data">
+        <img ng-src="api/userQrCode/{{data.identity}}" />
+    </div>
+</div>
 <div class="modal-footer">
     <button class="btn btn-default" type="button" ng-click="cancel()">关闭</button>
 </div>
