@@ -1,6 +1,5 @@
 package com.crawer.jd.script;
 
-import com.sun.script.javascript.RhinoScriptEngine;
 import org.apache.commons.io.IOUtils;
 
 import javax.script.Invocable;
@@ -9,6 +8,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -73,7 +73,7 @@ public class EncryptScript {
         return (String) engine.eval(script);
     }
 
-    public static String parseEncryptKey(String script) throws ScriptException {
+    public static Map<String,String> parseEncryptKey(String script) throws ScriptException {
         if (script.startsWith("eval")) {
             script = script.substring(4);
         }
@@ -85,10 +85,16 @@ public class EncryptScript {
             key = m.group(2);
             break;
         }
-        return key;
+        Pattern p2 = Pattern.compile("set\\(\\\"(.+?)\\\".+?\\)");
+        Matcher m2 = p2.matcher(runningScript);
+        m2.find();
+        String keyName=m2.group(1);
+        Map<String,String> map=new HashMap<>();
+        map.put(keyName,key);
+        return map;
     }
 
-    static RhinoScriptEngine FingerInvoke = null;
+    static Invocable FingerInvoke = null;
 
 
     public static Map<String,String> getFingure(String riskId,String userAgent) throws ScriptException, IOException, NoSuchMethodException {
@@ -96,7 +102,7 @@ public class EncryptScript {
         return (Map<String, String>) invoke.invokeFunction("invokeItem", riskId,userAgent, "zh-CN");
     }
 
-    private static RhinoScriptEngine loadFingureEngin() throws IOException, ScriptException {
+    private static Invocable loadFingureEngin() throws IOException, ScriptException {
         if (FingerInvoke == null) {
             String fingerScript = loadResource("JdJrTdRiskFinger.js");
             String invokeScript = loadResource("invokeRiskFingerScript.js");
@@ -104,8 +110,7 @@ public class EncryptScript {
             ScriptEngine engine = manager.getEngineByName("javascript");
             engine.eval(fingerScript);
             engine.eval(invokeScript);
-            FingerInvoke = (RhinoScriptEngine) engine;
-            ;
+            FingerInvoke = (Invocable) engine;
         }
         return FingerInvoke;
     }

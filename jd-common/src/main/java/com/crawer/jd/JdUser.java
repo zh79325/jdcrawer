@@ -242,19 +242,22 @@ public class JdUser {
     }
 
     private String getEid(String g, String a) throws IOException, ScriptException, NoSuchMethodException {
-        String encryptKey = getEncryptKey();
+        Map<String, String> map=getEncryptKey();
+        String key=map.keySet().toArray(new String[]{})[0];
+        String encryptKey = map.get(key);
         g = EncryptScript.encrypt(g, encryptKey);
         a = EncryptScript.encrypt(g, encryptKey);
         String url = String.format("http://payrisk.jd.com/fcf.html?g=%s&a=%s", g, a);
-        String txt = getResult(url, null, null);
-        return txt;
+        String eidTxt = getResult(url, null, null);
+        cookieJar.addCookie("payrisk.jd.com",key,eidTxt);
+        return eidTxt;
     }
 
-    private String getEncryptKey() throws IOException, ScriptException {
+    private Map<String, String> getEncryptKey() throws IOException, ScriptException {
         String url = "https://payrisk.jd.com/js/td.js";
         String js = getResult(url, null, null);
-        String key = EncryptScript.parseEncryptKey(js);
-        return key;
+        Map<String,String> keyMap = EncryptScript.parseEncryptKey(js);
+        return keyMap;
     }
 
     Map<String, String> getFingure() {
@@ -297,11 +300,61 @@ public class JdUser {
         String url = "http://trade.jd.com/shopping/order/getOrderInfo.action";
         String html = getResult(url, null, params);
         Document doc = Jsoup.parse(html);
-
-        Elements trackid = doc.select("#TrackID");
-        Elements fp = doc.select("#fp");
         String trackidStr = cookieJar.getValue("TrackID");
-        System.out.println(trackidStr);
+
+        /**
+         *      payload = {
+         'overseaPurchaseCookies': '',
+         'submitOrderParam.btSupport': '1',
+         'submitOrderParam.ignorePriceChange': '0',
+         'submitOrderParam.sopNotPutInvoice': 'false',
+         'submitOrderParam.trackID': self.trackid,
+         'submitOrderParam.eid': self.eid,
+         'submitOrderParam.fp': self.fp,
+         }
+         */
+
+        params=new HashMap<>();
+        params.put("overseaPurchaseCookies","");
+        params.put("submitOrderParam.btSupport","1");
+        params.put("submitOrderParam.ignorePriceChange","0");
+        params.put("submitOrderParam.sopNotPutInvoice","false");
+        params.put("submitOrderParam.trackID",trackidStr);
+        params.put("submitOrderParam.eid",eid);
+        params.put("submitOrderParam.fp",fp);
+
+        url="http://trade.jd.com/shopping/order/submitOrder.action";
+        html=postResult(url,null,params);
+        System.out.println(html);
+
+    }
+
+    private String postResult(String url, Headers headers, Map<String, String> params) throws IOException {
+        Response response = post(url, headers, params);
+        return response.body().string();
+    }
+
+    private Response post(String url, Headers headers, Map<String, String> params) throws IOException {
+        HttpUrl httpUrl = HttpUrl.parse(url);
+        if (params != null) {
+            HttpUrl.Builder urlBuilder = httpUrl.newBuilder();
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                urlBuilder.addQueryParameter(entry.getKey(), entry.getValue());
+            }
+            httpUrl = urlBuilder.build();
+        }
+        if (headers == null) {
+            headers = this._headers;
+        }
+        RequestBody body=RequestBody.create(null, new byte[0]);
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                .headers(headers)
+                .post(body)
+                .build();
+        Response response = null;
+        response = client.newCall(request).execute();
+        return response;
     }
 
     void subMitOrder(JdItem item) {

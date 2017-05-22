@@ -46,4 +46,19 @@ public class JdCookieJar implements CookieJar {
         }
         return null;
     }
+
+    public void addCookie(String domain, String key, String value) {
+        for (Cookie c : _cookies) {
+            if (c.name().equals(key)) {
+                _cookies.remove(c);
+                break;
+            }
+        }
+        Cookie cookie = new Cookie.Builder()
+                .name(key)
+                .value(value)
+                .domain(domain)
+                .build();
+        _cookies.add(cookie);
+    }
 }
