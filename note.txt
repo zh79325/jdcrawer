@@ -37,12 +37,16 @@ function td_collect_exe() {
     })()
 }
 
-riskId = https://payrisk.jd.com/y.html?v=0.6833678304683417&o=passport.jd.com/new/login.aspx
- _CurrentPageProtocol + "payrisk.jd.com/y.html?v=" + Math.random() + "&o=" + _CurrentPageUrl;
+
+https://payrisk.com.crawer.jd.com/js/td.js
+
+
+riskId = https://payrisk.com.crawer.jd.com/y.html?v=0.6833678304683417&o=passport.com.crawer.jd.com/new/login.aspx
+ _CurrentPageProtocol + "payrisk.com.crawer.jd.com/y.html?v=" + Math.random() + "&o=" + _CurrentPageUrl;
 
 var t={
 fp: "73716330cd2413eaccb3cb06c3b695e8"
-o: "passport.jd.com/new/login.aspx"
+o: "passport.com.crawer.jd.com/new/login.aspx"
 oid: ""
 p: "s"
 pin: ""

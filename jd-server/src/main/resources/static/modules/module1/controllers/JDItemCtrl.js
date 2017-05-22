@@ -3,8 +3,8 @@ define(['app', 'app-modal'], function (app) {
       $scope.itemFilter = {};
       $http.get("api/items")
          .then(function (response) {
-            $scope.groups = response.data;
-            $scope.groups[0].isCollapsed = true;
+            // $scope.groups = response.data;
+            // $scope.groups[0].isCollapsed = true;
          });
       $scope.buy = function (item) {
          $http.post("api/buy/" + item.id);
@@ -48,351 +48,11 @@ define(['app', 'app-modal'], function (app) {
          }
          return true;
       }
-      var q = [],
-         v = "",
-         t = "Abadi MT Condensed Light;Adobe Fangsong Std;Adobe Hebrew;Adobe Ming Std;Agency FB;Arab;Arabic Typesetting;Arial Black;Batang;Bauhaus 93;Bell MT;Bitstream Vera Serif;Bodoni MT;Bookman Old Style;Braggadocio;Broadway;Calibri;Californian FB;Castellar;Casual;Centaur;Century Gothic;Chalkduster;Colonna MT;Copperplate Gothic Light;DejaVu LGC Sans Mono;Desdemona;DFKai-SB;Dotum;Engravers MT;Eras Bold ITC;Eurostile;FangSong;Forte;Franklin Gothic Heavy;French Script MT;Gabriola;Gigi;Gisha;Goudy Old Style;Gulim;GungSeo;Haettenschweiler;Harrington;Hiragino Sans GB;Impact;Informal Roman;KacstOne;Kino MT;Kozuka Gothic Pr6N;Lohit Gujarati;Loma;Lucida Bright;Lucida Fax;Magneto;Malgun Gothic;Matura MT Script Capitals;Menlo;MingLiU-ExtB;MoolBoran;MS PMincho;MS Reference Sans Serif;News Gothic MT;Niagara Solid;Nyala;Palace Script MT;Papyrus;Perpetua;Playbill;PMingLiU;Rachana;Rockwell;Sawasdee;Script MT Bold;Segoe Print;Showcard Gothic;SimHei;Snap ITC;TlwgMono;Tw Cen MT Condensed Extra Bold;Ubuntu;Umpush;Univers;Utopia;Vladimir Script;Wide Latin".split(";"),
-         r = "4game;AdblockPlugin;AdobeExManCCDetect;AdobeExManDetect;Alawar NPAPI utils;Aliedit Plug-In;Alipay Security Control 3;AliSSOLogin plugin;AmazonMP3DownloaderPlugin;AOL Media Playback Plugin;AppUp;ArchiCAD;AVG SiteSafety plugin;Babylon ToolBar;Battlelog Game Launcher;BitCometAgent;Bitdefender QuickScan;BlueStacks Install Detector;CatalinaGroup Update;Citrix ICA Client;Citrix online plug-in;Citrix Receiver Plug-in;Coowon Update;DealPlyLive Update;Default Browser Helper;DivX Browser Plug-In;DivX Plus Web Player;DivX VOD Helper Plug-in;doubleTwist Web Plugin;Downloaders plugin;downloadUpdater;eMusicPlugin DLM6;ESN Launch Mozilla Plugin;ESN Sonar API;Exif Everywhere;Facebook Plugin;File Downloader Plug-in;FileLab plugin;FlyOrDie Games Plugin;Folx 3 Browser Plugin;FUZEShare;GDL Object Web Plug-in 16.00;GFACE Plugin;Ginger;Gnome Shell Integration;Google Earth Plugin;Google Earth Plug-in;Google Gears 0.5.33.0;Google Talk Effects Plugin;Google Update;Harmony Firefox Plugin;Harmony Plug-In;Heroes & Generals live;HPDetect;Html5 location provider;IE Tab plugin;iGetterScriptablePlugin;iMesh plugin;Kaspersky Password Manager;LastPass;LogMeIn Plugin 1.0.0.935;LogMeIn Plugin 1.0.0.961;Ma-Config.com plugin;Microsoft Office 2013;MinibarPlugin;Native Client;Nitro PDF Plug-In;Nokia Suite Enabler Plugin;Norton Identity Safe;npAPI Plugin;NPLastPass;NPPlayerShell;npTongbuAddin;NyxLauncher;Octoshape Streaming Services;Online Storage plug-in;Orbit Downloader;Pando Web Plugin;Parom.TV player plugin;PDF integrado do WebKit;PDF-XChange Viewer;PhotoCenterPlugin1.1.2.2;Picasa;PlayOn Plug-in;QQ2013 Firefox Plugin;QQDownload Plugin;QQMiniDL Plugin;QQMusic;RealDownloader Plugin;Roblox Launcher Plugin;RockMelt Update;Safer Update;SafeSearch;Scripting.Dictionary;SefClient Plugin;Shell.UIHelper;Silverlight Plug-In;Simple Pass;Skype Web Plugin;SumatraPDF Browser Plugin;Symantec PKI Client;Tencent FTN plug-in;Thunder DapCtrl NPAPI Plugin;TorchHelper;Unity Player;Uplay PC;VDownloader;Veetle TV Core;VLC Multimedia Plugin;Web Components;WebKit-integrierte PDF;WEBZEN Browser Extension;Wolfram Mathematica;WordCaptureX;WPI Detector 1.4;Yandex Media Plugin;Yandex PDF Viewer;YouTube Plug-in;zako".split(";");
 
-      function p(d) {
-         var f = {};
-         f.name = d.name;
-         f.filename = d.filename.toLowerCase();
-         f.description = d.description;
-         void 0 !== d.version && (f.version = d.version);
-         f.mimeTypes = [];
-         for (var h = 0; h < d.length; h++) {
-            var m = d[h],
-               e = {};
-            e.description = m.description;
-            e.suffixes = m.suffixes;
-            e.type = m.type;
-            f.mimeTypes.push(e)
-         }
-         return f
-      }
       var toJson = "object" === typeof JSON && JSON.stringify;
-      var minHash = function (d) {
-         var f, h, m, e = d.length & 3,
-            l = d.length - e;
-         f = void 0;
-         for (m = 0; m < l;)
-            h = d.charCodeAt(m) & 255 | (d.charCodeAt(++m) & 255) << 8 | (d.charCodeAt(++m) & 255) << 16 | (d.charCodeAt(++m) & 255) << 24,
-            ++m,
-            h = 3432918353 * (h & 65535) + ((3432918353 * (h >>> 16) & 65535) << 16) & 4294967295,
-            h = h << 15 | h >>> 17,
-            h = 461845907 * (h & 65535) + ((461845907 * (h >>> 16) & 65535) << 16) & 4294967295,
-            f ^= h,
-            f = f << 13 | f >>> 19,
-            f = 5 * (f & 65535) + ((5 * (f >>> 16) & 65535) << 16) & 4294967295,
-            f = (f & 65535) + 27492 + (((f >>> 16) + 58964 & 65535) << 16);
-         h = 0;
-         switch (e) {
-         case 3:
-            h ^= (d.charCodeAt(m + 2) & 255) << 16;
-         case 2:
-            h ^= (d.charCodeAt(m + 1) & 255) << 8;
-         case 1:
-            h ^= d.charCodeAt(m) & 255,
-               h = 3432918353 * (h & 65535) + ((3432918353 * (h >>> 16) & 65535) << 16) & 4294967295,
-               h = h << 15 | h >>> 17,
-               f ^= 461845907 * (h & 65535) + ((461845907 * (h >>> 16) & 65535) << 16) & 4294967295
-         }
-         f ^= d.length;
-         f ^= f >>> 16;
-         f = 2246822507 * (f & 65535) + ((2246822507 * (f >>> 16) & 65535) << 16) & 4294967295;
-         f ^= f >>> 13;
-         f = 3266489909 * (f & 65535) + ((3266489909 * (f >>> 16) & 65535) << 16) & 4294967295;
-         return (f ^ f >>> 16) >>> 0
-      }
 
-      function l() {
-         function d(d) {
-            var e = {};
-            m.style.fontFamily = d;
-            document.body.appendChild(m);
-            e.height = m.offsetHeight;
-            e.width = m.offsetWidth;
-            document.body.removeChild(m);
-            return e
-         }
-         var f = ["monospace", "sans-serif", "serif"],
-            h = [],
-            m = document.createElement("span");
-         m.style.fontSize = "72px";
-         m.style.visibility = "hidden";
-         m.innerHTML = "mmmmmmmmmmlli";
-         for (var e = 0; e < f.length; e++)
-            h[e] = d(f[e]);
-         this.checkSupportFont = function (e) {
-            for (var m = 0; m < h.length; m++) {
-               var a = d(e + "," + f[m]),
-                  c = h[m];
-               if (a.height !== c.height || a.width !== c.width)
-                  return !0
-            }
-            return !1
-         }
-      }
 
-      function Jd_Jr_Td_Security_Model(f, l) {
-         var p = !1;
-         return {
-            flashId: f,
-            url: l,
-            container: null,
-            init_model: function () {
-               if (this.flashCheck().f) {
-                  window.jd_jr_td_fl_security_load_event = function (f) {
-                     p = !0
-                  };
-                  var q = document.createElement("div");
-                  q.setAttribute("style", "width:1px;height:1px;background:#FFF;display:inline-block;position:absolute;left:-2000px;top:-2000px;");
-                  q.innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="0" height="0" id="' + f + '" align="middle"><param name="movie" value="' + l + '" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" /><param name="play" value="true" /><param name="loop" value="true" /><param name="wmode" value="window" /><param name="scale" value="showall" /><param name="menu" value="true" /><param name="devicefont" value="false" /><param name="salign" value="" /><param name="allowScriptAccess" value="always" /><param name="swliveconnect" value="true"/><embed play="true" allowScriptAccess="always" swliveconnect="true" name="' + f + '" src="' + l + '" quality="high" bgcolor="#FFFFFF" width="0" height="0" type="application/x-shockwave-flash" swliveconnect="true" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash"/></object>';
-                  document.body.appendChild(q);
-                  this.container = q
-               }
-            },
-            destroy: function () {
-               try {
-                  null != this.container && this.container.parentNode.removeChild(this.container),
-                     window.jd_jr_td_fl_security_load_event && (window.jd_jr_td_fl_security_load_event = void 0)
-               }
-               catch (q) {}
-            },
-            securityDetail: function () {
-               var l = null;
-               if (p && f) {
-                  var v = this.getContainer();
-                  try {
-                     l = v.jd_jr_td_security_fl_info()
-                  }
-                  catch (t) {}
-               }
-               return l
-            },
-            setSecurityVal: function (l) {
-               var q = !1;
-               if (p && f) {
-                  var t = this.getContainer();
-                  try {
-                     q = t.jd_jr_td_security_s_fl_ser(l)
-                  }
-                  catch (r) {}
-               }
-               return q
-            },
-            getSecurityVal: function () {
-               var l = null;
-               if (p && f) {
-                  var v = this.getContainer();
-                  try {
-                     l = v.jd_jr_td_security_g_fl_ser()
-                  }
-                  catch (t) {}
-               }
-               return l
-            },
-            getContainer: function () {
-               var l = document[f]; -
-               1 != navigator.appName.indexOf("Microsoft") && (l = window[f]);
-               return l
-            },
-            flashCheck: function () {
-               try {
-                  var f = 0,
-                     l = 0;
-                  if (document.all)
-                     var p = new ActiveXObject("ShockwaveFlash.ShockwaveFlash"),
-                        f = 1,
-                        r = p.GetVariable("$version"),
-                        l = parseInt(r.split(" ")[1].split(",")[0]);
-                  else if (navigator.plugins && 0 < navigator.plugins.length && (p = navigator.plugins["Shockwave Flash"]))
-                     for (var f = 1, d = p.description.split(" "), p = 0; p < d.length; ++p)
-                        isNaN(parseInt(d[p])) || (l = parseInt(d[p]));
-                  return {
-                     f: f,
-                     v: l
-                  }
-               }
-               catch (z) {}
-               return {
-                  f: !1
-               }
-            }
-         }
-      }
-      var _jdJrTdSecurityModel = new Jd_Jr_Td_Security_Model("jd_jr_td_flash", "http://payrisk.jd.com/JdSecurity.swf");
-      _jdJrTdSecurityModel.init_model();
-      var collect = function () {
-         var d = new Date;
-         try {
-            var f = document.createElement("div"),
-               h = {},
-               m = "ActiveBorder ActiveCaption AppWorkspace Background ButtonFace ButtonHighlight ButtonShadow ButtonText CaptionText GrayText Highlight HighlightText InactiveBorder InactiveCaption InactiveCaptionText InfoBackground InfoText Menu MenuText Scrollbar ThreeDDarkShadow ThreeDFace ThreeDHighlight ThreeDLightShadow ThreeDShadow Window WindowFrame WindowText".split(" ");
-            if (window.getComputedStyle)
-               for (var e = 0; e < m.length; e++)
-                  document.body.appendChild(f),
-                  f.style.color = m[e],
-                  h[m[e]] = window.getComputedStyle(f).getPropertyValue("color"),
-                  document.body.removeChild(f)
-         }
-         catch (x) {}
-         var f = {
-               ca: {},
-               ts: {},
-               m: {}
-            },
-            m = f.ca,
-            u, w, e = 0;
-         try {
-            u = document.createElement("canvas"),
-               w = u.getContext("2d")
-         }
-         catch (x) {}
-         w && (w.fillStyle = "red",
-            w.fillRect(30, 10, 200, 100),
-            w.strokeStyle = "#1a3bc1",
-            w.lineWidth = 6,
-            w.lineCap = "round",
-            w.arc(50, 50, 20, 0, Math.PI, !1),
-            w.stroke(),
-            w.fillStyle = "#42e1a2",
-            w.font = "15.4px 'Arial'",
-            w.textBaseline = "alphabetic",
-            w.fillText("PR flacks quiz gym: TV DJ box when? \u2620", 15, 60),
-            w.shadowOffsetX = 1,
-            w.shadowOffsetY = 2,
-            w.shadowColor = "white",
-            w.fillStyle = "rgba(0, 0, 200, 0.5)",
-            w.font = "60px 'Not a real font'",
-            w.fillText("No\u9a97", 40, 80),
-            e = minHash(u.toDataURL()));
-         m.tdHash = e;
-         u = !1;
-         if (window.WebGLRenderingContext) {
-            w = ["webgl", "experimental-webgl", "moz-webgl", "webkit-3d"];
-            for (var a = [], c, e = 0; e < w.length; e++)
-               try {
-                  var b = !1;
-                  (b = document.createElement("canvas").getContext(w[e], {
-                     stencil: !0
-                  })) && b && (c = b,
-                     a.push(w[e]))
-               }
-            catch (x) {}
-            a.length && (u = {
-               name: a,
-               gl: c
-            })
-         }
-         if (u) {
-            e = u.gl;
-            m.contextName = u.name.join();
-            m.webglversion = e.getParameter(e.VERSION);
-            m.shadingLV = e.getParameter(e.SHADING_LANGUAGE_VERSION);
-            m.vendor = e.getParameter(e.VENDOR);
-            m.renderer = e.getParameter(e.RENDERER);
-            c = [];
-            try {
-               c = e.getSupportedExtensions(),
-                  m.extensions = c
-            }
-            catch (x) {}
-         }
-         f.ts.deviceTime = d.getTime();
-         f.m.documentMode = document.documentMode;
-         f.m.compatMode = document.compatMode;
-         m = [];
-         c = new l;
-         for (e = 0; e < t.length; e++)
-            u = t[e],
-            c.checkSupportFont(u) && m.push(u);
-         f.fo = m;
-         var e = {},
-            m = [],
-            k;
-         for (k in navigator)
-            "object" != typeof navigator[k] && (e[k] = navigator[k]),
-            m.push(k);
-         e.enumerationOrder = m;
-         e.javaEnabled = navigator.javaEnabled();
-         try {
-            e.taintEnabled = navigator.taintEnabled()
-         }
-         catch (x) {}
-         f.n = e;
-         var e = navigator.userAgent.toLowerCase(),
-            g;
-         if (k = e.match(/rv:([\d.]+)\) like gecko/))
-            g = k[1];
-         if (k = e.match(/msie ([\d.]+)/))
-            g = k[1];
-         k = [];
-         if (g)
-            for (g = "AcroPDF.PDF;Adodb.Stream;AgControl.AgControl;DevalVRXCtrl.DevalVRXCtrl.1;MacromediaFlashPaper.MacromediaFlashPaper;Msxml2.DOMDocument;Msxml2.XMLHTTP;PDF.PdfCtrl;QuickTime.QuickTime;QuickTimeCheckObject.QuickTimeCheck.1;RealPlayer;RealPlayer.RealPlayer(tm) ActiveX Control (32-bit);RealVideo.RealVideo(tm) ActiveX Control (32-bit);rmocx.RealPlayer G2 Control;Scripting.Dictionary;Shell.UIHelper;ShockwaveFlash.ShockwaveFlash;SWCtl.SWCtl;TDCCtl.TDCCtl;WMPlayer.OCX".split(";"),
-               e = 0; e < g.length; e++) {
-               var y = g[e];
-               try {
-                  var n = new ActiveXObject(y),
-                     m = {};
-                  m.name = y;
-                  try {
-                     m.version = n.GetVariable("$version")
-                  }
-                  catch (x) {}
-                  try {
-                     m.version = n.GetVersions()
-                  }
-                  catch (x) {}
-                  m.version && 0 < m.version.length || (m.version = "");
-                  k.push(m)
-               }
-               catch (x) {}
-            }
-         else {
-            g = navigator.plugins;
-            m = {};
-            for (e = 0; e < g.length; e++)
-               y = g[e],
-               m[y.name] = 1,
-               k.push(p(y));
-            for (e = 0; e < r.length; e++)
-               n = r[e],
-               m[n] || (y = g[n],
-                  y && k.push(p(y)))
-         }
-         g = "availHeight availWidth colorDepth bufferDepth deviceXDPI deviceYDPI height width logicalXDPI logicalYDPI pixelDepth updateInterval".split(" ");
-         y = {};
-         for (e = 0; g.length > e; e++)
-            n = g[e],
-            void 0 !== screen[n] && (y[n] = screen[n]);
-         g = ["devicePixelRatio", "screenTop", "screenLeft"];
-         m = {};
-         for (e = 0; g.length > e; e++)
-            n = g[e],
-            void 0 !== window[n] && (m[n] = window[n]);
-         f.p = k;
-         f.w = m;
-         f.s = y;
-         f.sc = h;
-         f.tz = d.getTimezoneOffset();
-         f.lil = q.sort().join("|");
-         f.wil = v;
-         d = {};
-         try {
-            d.cookie = navigator.cookieEnabled,
-               d.localStorage = !!window.localStorage,
-               d.sessionStorage = !!window.sessionStorage,
-               d.globalStorage = !!window.globalStorage,
-               d.indexedDB = !!window.indexedDB
-         }
-         catch (x) {}
-         f.ss = d;
-         f.fl = _jdJrTdSecurityModel.securityDetail();
-         return tdencrypt(f)
-      }
       var tdencrypt = function (d) {
-         d = toJson(d);
          d = encodeURIComponent(d);
          var f = "",
             h, m, e, l, p, a, c = 0;
@@ -588,6 +248,7 @@ define(['app', 'app-modal'], function (app) {
             this.nativeMap = Array.prototype.map
          };
          w.prototype = {
+            options:{},
             extend: function (a, c) {
                if (null == a)
                   return c;
@@ -615,25 +276,25 @@ define(['app', 'app-modal'], function (app) {
                r.osVersion = m;
                r.browser = e;
                r.browserVersion = u;
-              //  b = this.colorDepthKey(b);
-              //  b = this.screenResolutionKey(b);
-              //  b = this.timezoneOffsetKey(b);
-              //  b = this.sessionStorageKey(b);
-              //  b = this.localStorageKey(b);
-              //  b = this.indexedDbKey(b);
-              //  b = this.addBehaviorKey(b);
-              //  b = this.openDatabaseKey(b);
-              //  b = this.cpuClassKey(b);
-              //  b = this.platformKey(b);
-              //  b = this.doNotTrackKey(b);
-              //  b = this.pluginsKey(b);
-              //  b = this.canvasKey(b);
-              //  b = this.webglKey(b);
+              /* b = this.colorDepthKey(b);
+               b = this.screenResolutionKey(b);
+               b = this.timezoneOffsetKey(b);
+               b = this.sessionStorageKey(b);
+               b = this.localStorageKey(b);
+               b = this.indexedDbKey(b);
+               b = this.addBehaviorKey(b);
+               b = this.openDatabaseKey(b);
+               b = this.cpuClassKey(b);
+               b = this.platformKey(b);
+               b = this.doNotTrackKey(b);
+               b = this.pluginsKey(b);
+               b = this.canvasKey(b);
+               b = this.webglKey(b);*/
                c = this.x64hash128(b.join("~~~"), 31);
-               return a(c)
+               return (c)
             },
             userAgentKey: function (a) {
-            true || (a.push(navigator.userAgent),
+               this.options.excludeUserAgent || (a.push(navigator.userAgent),
                   r.userAgent = f(navigator.userAgent),
                   this.browserRedirect(navigator.userAgent));
                return a
@@ -656,17 +317,17 @@ define(['app', 'app-modal'], function (app) {
                r.origin = a || b || d || g || e || n || x || c ? "mobile" : "pc"
             },
             languageKey: function (a) {
-               true || (a.push(navigator.language),
+               this.options.excludeLanguage || (a.push(navigator.language),
                   r.language = this.replaceAll(navigator.language, " ", "_"));
                return a
             },
             colorDepthKey: function (a) {
-               true || (a.push(screen.colorDepth),
+               this.options.excludeColorDepth || (a.push(screen.colorDepth),
                   r.colorDepth = screen.colorDepth);
                return a
             },
             screenResolutionKey: function (a) {
-               if (!true) {
+               if (!this.options.excludeScreenResolution) {
                   var c = this.getScreenResolution();
                   "undefined" !== typeof c && (a.push(c.join("x")),
                      r.screenResolution = c.join("x"))
@@ -674,15 +335,15 @@ define(['app', 'app-modal'], function (app) {
                return a
             },
             getScreenResolution: function () {
-               return true ? screen.height > screen.width ? [screen.height, screen.width] : [screen.width, screen.height] : [screen.height, screen.width]
+               return this.options.detectScreenOrientation ? screen.height > screen.width ? [screen.height, screen.width] : [screen.width, screen.height] : [screen.height, screen.width]
             },
             timezoneOffsetKey: function (a) {
-               true || (a.push((new Date).getTimezoneOffset()),
+               this.options.excludeTimezoneOffset || (a.push((new Date).getTimezoneOffset()),
                   r.timezoneOffset = (new Date).getTimezoneOffset() / 60);
                return a
             },
             sessionStorageKey: function (a) {
-               !true && this.hasSessionStorage() && (a.push("sessionStorageKey"),
+               !this.options.excludeSessionStorage && this.hasSessionStorage() && (a.push("sessionStorageKey"),
                   r.sessionStorage = !0);
                return a
             },
@@ -1050,26 +711,31 @@ define(['app', 'app-modal'], function (app) {
             }
          };
          return w
+      };
+      var sss = JdJrTdRiskFinger();
+      var getFingureEncrypted = function () {
+         return sss.prototype.get();
+      }
+      var getFingure = function () {
+         return sss.prototype.getData();;
       }
       $scope.reload = function () {
-
-          var sss= JdJrTdRiskFinger();
-          var fp=  null;
-          sss.prototype.get(function(f){
-            fp=f;
-          });
-          var t={
+         var fp = getFingureEncrypted();
+         var t = {
             fp: fp,
-            o: "passport.jd.com/new/login.aspx",
+            o: "passport.com.crawer.jd.com/new/login.aspx",
             oid: "",
             p: "s",
             pin: "",
             t: "N3EBGE37FOBCNITMGQN22DQEED4NINAFD5TUUFA3Y36CYQCR7Z2WILLAQITL2PUXYH4J2EHTXPS7Y"
-          }
-          var p=sss.prototype.getData();
-          var l = "?g=" + tdencrypt(p);
-           l += "&a=" + tdencrypt(t);
-          // console.log(t);
+         }
+         var p = getFingure();
+         p = JSON.stringify(p);
+         t = JSON.stringify(t);
+         var l = "?g=" + tdencrypt(p);
+         l += "&a=" + tdencrypt(t);
+         console.log((p));
+         console.log((t));
          console.log("http://payrisk.jd.com/fcf.html" + l);
       }
 
