@@ -5,6 +5,7 @@ var _$_53a7 = ["\x6F\x62\x6A\x65\x63\x74", "\x30", "\x76\x61\x6C\x75\x65\x4F\x66
 if (typeof JSON !== _$_53a7[0]) {
     JSON = {}
 }
+var eeeeeeeeeeee=null;
 ;(function() {
     function i(C) {
         return C < 10 ? _$_53a7[1] + C : C
@@ -2313,6 +2314,7 @@ CryptoJS[_$_53a7[132]][_$_53a7[179]] = (function() {
             this[_$_53a7[214]] = Array[_$_53a7[4]][_$_53a7[215]]
         }
     ;
+    eeeeeeeeeeee=cf;
     cM[_$_53a7[216]] = cf;
     cf[_$_53a7[4]] = {
         extend: function(cT, cU) {
@@ -2350,6 +2352,7 @@ CryptoJS[_$_53a7[132]][_$_53a7[179]] = (function() {
                 cM[_$_53a7[235]] = cY;
                 cH[_$_53a7[236]] = cg[_$_53a7[206]](cY);
                 var da = cC(bF(cY));
+                print("aaaaa-----------"+da);
                 cV(da)
             })
         },
@@ -3451,4 +3454,13 @@ CryptoJS[_$_53a7[132]][_$_53a7[179]] = (function() {
 })();
 var makeEncrypt=function(str,callback){
     captchaCallback(JSON.parse(str),callback);
+}
+
+var getFp=function (callback) {
+    new eeeeeeeeeeee().get(function(a){
+        print(a);
+        if(callback!=null){
+            callback(a);
+        }
+    });
 }

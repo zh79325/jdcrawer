@@ -24,31 +24,28 @@ import java.util.Map;
  */
 public class YhdScript {
 
-    public static void encrypt(String callBackJson,JsCallback callBack) throws NoSuchMethodException, ScriptException, IOException {
+    public static void encrypt(Context cx ,Global global,String callBackJson,JsCallback callBack) throws NoSuchMethodException, ScriptException, IOException {
+        Object object = global.get("makeEncrypt", global);
+        Object[] params = new Object[]{callBackJson, callBack};
+        Function function = (Function) object;
+        function.call(cx, global, global, params);
+    }
+
+    public static void getFp(Context cx, Global global, JsCallback callBack) {
+        Object object = global.get("getFp", global);
+        Object[] params = new Object[]{ callBack};
+        Function function = (Function) object;
+        function.call(cx, global, global, params);
+    }
 
 
-
-
+    public static Global loadYhdScriptEnv(Context cx) throws IOException {
         String script = ScriptUtil.loadResource("/com/crawler/envirenment/envjs/rhino.js",ScriptUtil.class);
-        Context cx = ContextFactory.getGlobal().enterContext();
         Global global = new Global(cx);
         cx.evaluateString(global, script, "rhino.js", 0, null);
-
         script = ScriptUtil.loadResource("yhdEncrypt.js", YhdScript.class);
-
-
         cx.evaluateString(global, script, "yhdEncrypt.js", 0, null);
-
-
-        Object object = global.get("makeEncrypt", global);
-
-
-        Object[] params = new Object[]{callBackJson, callBack};
-        if (object != null && object instanceof Function) {
-            Function function = (Function) object;
-            Object call = function.call(cx, global, global, params);
-        }
-
+        return global;
     }
 
     public static Map<String, Object> encrypt(String pubKey, String... keys) throws IOException, ScriptException, NoSuchMethodException {
@@ -67,13 +64,24 @@ public class YhdScript {
 
 
     public static void main(String[] args) throws NoSuchMethodException, ScriptException, IOException {
-        encrypt("{}", new JsCallback() {
+        Context cx = ContextFactory.getGlobal().enterContext();
+        Global global=loadYhdScriptEnv(cx);
+        getFp(cx,global,new JsCallback(){
+
+            @Override
+            public Object call(Context cx, Scriptable scope, Scriptable thisObj, Object[] args) {
+                System.out.println(args);
+                return null;
+            }
+        });
+        encrypt(cx,global,"{}", new JsCallback() {
             @Override
             public Object call(Context cx, Scriptable scope, Scriptable thisObj, Object[] args) {
                 return null;
             }
         });
     }
+
 
 
 }

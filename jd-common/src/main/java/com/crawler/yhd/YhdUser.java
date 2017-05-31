@@ -2,19 +2,26 @@ package com.crawler.yhd;
 
 import com.alibaba.fastjson.JSONObject;
 import com.crawler.common.CrawlerUser;
-import com.crawler.yhd.script.YhdScript;
+import com.crawler.common.JsCallback;
 import okhttp3.Headers;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ContextFactory;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.tools.shell.Global;
 
 import javax.script.ScriptException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.crawler.yhd.script.YhdScript.*;
 
 /**
  * Author     : zh_zhou@Ctrip.com
@@ -27,7 +34,7 @@ public class YhdUser extends CrawlerUser {
 
     String guid;
 
-    public void logIn(String uid, String pwd) throws IOException, ScriptException, NoSuchMethodException {
+    public void logIn(String uid, String pwd) throws Exception{
         String html = getResult("https://passport.yhd.com/passport/login_input.do", null, null);
         Document doc = Jsoup.parse(html);
         Elements captchaTokenElement = doc.select("#__yct_str__");
@@ -36,11 +43,13 @@ public class YhdUser extends CrawlerUser {
         Elements isAutoLoginElement = doc.select("#isAutoLogin");
         Elements validCodeElement = doc.select("#vcd");
 
-        guid=generateMixed(36);
-        Date expire=new Date(new Date().getTime()+365L*50*24*3600*1000);
-        cookieJar.addCookie("yhd.com", "guid",guid,expire);
-        cookieJar.addCookie("yhd.com","rURL","http%3A%2F%2Fwww.yhd.com",null);
-        getResult("https://captcha.yhd.com/public/getenv.do?f=QWZwQGZwMTNwgDOjNmZ0IWYwADO2gTOxYWOmBDM3QjM&callback=&t=",null,null);
+        guid = generateMixed(36);
+        Date expire = new Date(new Date().getTime() + 365L * 50 * 24 * 3600 * 1000);
+        cookieJar.addCookie("yhd.com", "guid", guid, expire);
+        cookieJar.addCookie("yhd.com", "newUserFlag", "1", expire);
+        cookieJar.addCookie("yhd.com", "rURL", "http%3A%2F%2Fwww.yhd.com%2F%3FcityId%3D1", null);
+
+
         String pubKey = getPubKey(html);
 
 //        var b = {
@@ -53,7 +62,7 @@ public class YhdUser extends CrawlerUser {
 //                returnUrl: returnUrl,
 //                isAutoLogin: $("#isAutoLogin").val()
 //    };
-        Map<String, Object> encrypted = YhdScript.encrypt(pubKey, uid, pwd);
+        Map<String, Object> encrypted = encrypt(pubKey, uid, pwd);
         Map<String, String> params = new HashMap<>();
         params.put("credentials.username", (String) encrypted.get(uid));
         params.put("credentials.password", (String) encrypted.get(pwd));
@@ -61,11 +70,11 @@ public class YhdUser extends CrawlerUser {
         params.put("validCode", validCode);
         String sig = sigElement.val();
         params.put("sig", sig);
-        String captchaToken = captchaTokenElement.val();
+        String captchaToken = getCaptchaToken();
         params.put("captchaToken", captchaToken);
         String loginSource = loginSourceElement.val();
         params.put("loginSource", loginSource);
-        params.put("returnUrl", "http://www.yhd.com");
+        params.put("returnUrl", "http://www.yhd.com/?cityId=1");
         String isAutoLogin = isAutoLoginElement.val();
         params.put("isAutoLogin", isAutoLogin);
 
@@ -81,6 +90,45 @@ public class YhdUser extends CrawlerUser {
         }
 
     }
+    private final CountDownLatch loginLatch = new CountDownLatch (1);
+
+    String CaptchaToken=null;
+    private String getCaptchaToken() throws Exception {
+        Context cx = ContextFactory.getGlobal().enterContext();
+        final Global global = loadYhdScriptEnv(cx);
+
+        getFp(cx, global, new JsCallback() {
+
+            @Override
+            public Object call(Context cx, Scriptable scope, Scriptable thisObj, Object[] args) {
+                String fp = (String) args[0];
+                try {
+                    String json1 = getResult("https://captcha.yhd.com/public/getenv.do?f=" + fp + "&callback=&t=", null, null);
+                    try {
+                        json1= json1.substring(1,json1.length()-2);
+                        encrypt(cx, global, json1, new JsCallback() {
+                            @Override
+                            public Object call(Context cx, Scriptable scope, Scriptable thisObj, Object[] args) {
+                                CaptchaToken= (String) args[1];
+                                loginLatch.countDown();
+                                return null;
+                            }
+                        });
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (ScriptException e) {
+                        e.printStackTrace();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+        });
+        loginLatch.await();
+        return CaptchaToken;
+    }
 
     private String getPubKey(String html) {
         Pattern p2 = Pattern.compile("var.+?pubkey.+?=.+?\\\"(.+?)\\\"");
@@ -91,10 +139,11 @@ public class YhdUser extends CrawlerUser {
     }
 
 
-    public static void main(String[] args) throws NoSuchMethodException, ScriptException, IOException {
+    public static void main(String[] args) throws Exception {
         YhdUser yhdUser = new YhdUser();
-        yhdUser.logIn("15821179325", "a08122419");
+        yhdUser.logIn("*******", "******");
     }
+
     String generateMixed(int d) {
         String[] f = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
         StringBuilder h = new StringBuilder();
