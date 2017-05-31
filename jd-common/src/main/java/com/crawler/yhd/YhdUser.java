@@ -3,6 +3,7 @@ package com.crawler.yhd;
 import com.alibaba.fastjson.JSONObject;
 import com.crawler.common.CrawlerUser;
 import com.crawler.yhd.script.YhdScript;
+import okhttp3.Headers;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -39,6 +40,7 @@ public class YhdUser extends CrawlerUser {
         Date expire=new Date(new Date().getTime()+365L*50*24*3600*1000);
         cookieJar.addCookie("yhd.com", "guid",guid,expire);
         cookieJar.addCookie("yhd.com","rURL","http%3A%2F%2Fwww.yhd.com",null);
+        getResult("https://captcha.yhd.com/public/getenv.do?f=QWZwQGZwMTNwgDOjNmZ0IWYwADO2gTOxYWOmBDM3QjM&callback=&t=",null,null);
         String pubKey = getPubKey(html);
 
 //        var b = {
@@ -67,7 +69,12 @@ public class YhdUser extends CrawlerUser {
         String isAutoLogin = isAutoLoginElement.val();
         params.put("isAutoLogin", isAutoLogin);
 
-        String json = postResult("https://passport.yhd.com/publicPassport/login.do", null, null, params);
+
+        Headers headers = _headers.newBuilder()
+                .add("Host", "passport.yhd.com")
+                .add("Referer", "https://passport.yhd.com/passport/login_input.do")
+                .build();
+        String json = postResult("https://passport.yhd.com/publicPassport/login.do", headers, null, params);
         JSONObject jsonObject = JSONObject.parseObject(json);
         if (jsonObject.getInteger("errorCode") == 0) {
             loginSuccess = true;
