@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author     : zh_zhou@Ctrip.com
@@ -56,5 +58,15 @@ public class JdUserController {
         JdUser user = userService.getByKey(identityKey);
         UserIdentity identity = new UserIdentity(user);
         return identity;
+    }
+
+    @RequestMapping(value = "/loggedUsers", method = RequestMethod.GET)
+    public List<UserIdentity> loggedUsers() throws Exception {
+        List<JdUser> user = userService.loggedUsers();
+        List<UserIdentity> identities=new ArrayList<>();
+        for (JdUser jdUser : user) {
+            identities.add(new UserIdentity(jdUser));
+        }
+        return identities;
     }
 }

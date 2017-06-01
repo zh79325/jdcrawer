@@ -117,6 +117,8 @@ public class JdItem {
     }
 
     public boolean canMiaoSha() {
-        return startRemainTime<1000L*300&&endRemainTime>=0;
+        Date now=new Date();
+        long time=miaoShaStartTime.getTime()-now.getTime();
+        return time<1000*10;
     }
 }

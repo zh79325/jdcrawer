@@ -66,7 +66,7 @@ public class JdUser  extends CrawlerUser {
                 .add("Referer", "https://www.jd.com/")
                 .build();
         String js=getResult(url,headers,null);
-        String json=js.substring(1,js.length()-1);
+        String json=js.substring(js.indexOf("{"),js.lastIndexOf("}")+1);
         JSONObject jsonObject=JSONObject.parseObject(json);
         this.nickName=jsonObject.getString("nickName");
         this.imgUrl=jsonObject.getString("imgUrl");
@@ -309,5 +309,11 @@ public class JdUser  extends CrawlerUser {
 
     public void buy(JdItem item) throws IOException {
         addToCart(item);
+    }
+
+    public void heartBeat() throws IOException {
+        String url="https://miaosha.jd.com/";
+        String html=getResult(url,null,null);
+        Document doc = Jsoup.parse(html);
     }
 }

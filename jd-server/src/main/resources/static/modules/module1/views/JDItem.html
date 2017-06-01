@@ -7,6 +7,16 @@
     class="btn btn-primary">
     登录京东账号
 </a>
+<legend>
+ 已登录用户列表
+</legend>
+<div class="row">
+ <div class="col-md-3" ng-repeat="user in users">
+   <h5>{{user.nickName}}</h5>
+   <img ng-src="{{user.imgUrl}}" />
+ </div>
+</div>
+<hr />
 <div class="row">
     <div class="col-md-2">
         <label>折扣上限:</label>
@@ -59,7 +69,11 @@
                 <label class="label label-info">原价:{{item.originalPrice}}</label>
                 <a class="btn btn-primary" ng-click="buy(item)">
                  <i class="fa fa-spinner fa-pulse" ng-if="item.buying"></i>
-                 Buy
+                 立即秒杀
+                </a>
+                <a class="btn btn-primary" ng-click="watchItem(item)">
+                 <i class="fa fa-spinner fa-pulse" ng-if="item.buying"></i>
+                 自动秒杀
                 </a>
             </div>
             <div ng-repeat-end class="row" ng-if="  $index%4==3"></div>

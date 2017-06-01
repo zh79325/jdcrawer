@@ -3,7 +3,9 @@ package com.crawler.jd.controllers;
 import com.crawler.jd.domain.JdGroup;
 import com.crawler.jd.domain.items.JdItem;
 import com.crawler.jd.service.ItemCacheService;
+import com.crawler.jd.service.JdMiaoShaService;
 import com.crawler.jd.service.JdUserService;
+import com.crawler.jd.service.MiaoShaStarted;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,10 @@ public class JdItemController {
     @Autowired
     JdUserService userService;
 
+
+    @Autowired
+    JdMiaoShaService miaoShaService;
+
     @RequestMapping(value = "/items", method = RequestMethod.GET)
     public List<JdGroup> items() throws IOException {
 
@@ -45,4 +51,16 @@ public class JdItemController {
         userService.buy(item);
         return item;
     }
+    @RequestMapping(value = "/watch/{itemId}", method = RequestMethod.POST)
+    public JdItem watch(@PathVariable("itemId") String itemId) throws IOException {
+        JdItem item = itemCacheService.getById(itemId);
+        miaoShaService.addToMiaoShaList(item, new MiaoShaStarted() {
+            @Override
+            public void itemStarted(JdItem item) throws Exception {
+                userService.buy(item);
+            }
+        });
+        return item;
+    }
+
 }
