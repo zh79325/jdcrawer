@@ -1,13 +1,11 @@
 package com.crawler.jd;
 
+import com.crawler.common.JxBrowserHackUtil;
 import com.teamdev.jxbrowser.chromium.*;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.UUID;
 
@@ -20,9 +18,7 @@ import java.util.UUID;
  */
 public class BrowserMain {
     public static void main(String[] args) throws Exception {
-        SimpleDateFormat df= ay.a;
-        MySimpleDateFormat mySimpleDateFormat=new MySimpleDateFormat(df);
-        setFinalStatic(ay.class.getField("a"), mySimpleDateFormat);
+        JxBrowserHackUtil.hack();
         System.setProperty("teamdev.license.info", "true");
         BrowserContextParams params=new BrowserContextParams("tmp/browser/"+ UUID.randomUUID().toString());
         BrowserContext context1 = new BrowserContext(params);
@@ -120,15 +116,6 @@ public class BrowserMain {
 
         });
 
-    }
-    static void setFinalStatic(Field field, Object newValue) throws Exception {
-        field.setAccessible(true);
-
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-        field.set(null, newValue);
     }
 
 }

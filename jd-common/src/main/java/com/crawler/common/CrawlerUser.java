@@ -1,6 +1,9 @@
 package com.crawler.common;
 
 import com.crawler.jd.http.JdCookieJar;
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.BrowserContext;
+import com.teamdev.jxbrowser.chromium.BrowserContextParams;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -32,9 +35,22 @@ public abstract class CrawlerUser {
         return loginSuccess;
     }
 
+    protected Browser browser;
 
     public CrawlerUser() {
+        try {
+            JxBrowserHackUtil.hack();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         identity = UUID.randomUUID().toString();
+
+        BrowserContextParams params=new BrowserContextParams("tmp/browser/"+identity);
+        BrowserContext context1 = new BrowserContext(params);
+
+        browser = new Browser(context1);
+
+
         cookieJar = new JdCookieJar();
         client = new OkHttpClient.Builder()
                 .cookieJar(cookieJar)

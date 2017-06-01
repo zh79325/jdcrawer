@@ -1,8 +1,14 @@
 package com.crawler.yhd;
 
 import com.alibaba.fastjson.JSONObject;
-import com.crawler.common.CrawlerUser;
-import com.crawler.common.JsCallback;
+import com.crawler.common.*;
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.JSValue;
+import com.teamdev.jxbrowser.chromium.dom.By;
+import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
+import com.teamdev.jxbrowser.chromium.dom.DOMElement;
+import com.teamdev.jxbrowser.chromium.dom.internal.InputElement;
+import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 import okhttp3.Headers;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -34,7 +40,47 @@ public class YhdUser extends CrawlerUser {
 
     String guid;
 
-    public void logIn(String uid, String pwd) throws Exception{
+    public void logIn(String uid,String pwd){
+        browser.loadURL("https://passport.yhd.com/passport/login_input.do");
+        BrowserWaitTool tool=new BrowserWaitTool(browser);
+        BrowserView browserView=  BrowserUtil.showBrowser(browser);
+
+        tool.waitUntil(new BrowserOperation() {
+            @Override
+            public boolean execute(Browser browser) {
+
+                DOMDocument document=  browser.getDocument();
+                DOMElement element= document.findElement(By.id("__yct_str__"));
+                if(element==null){
+                    return false;
+                }
+                String value=((InputElement) element).getValue();
+                if(null==value||"".equalsIgnoreCase(value.trim())){
+                    return false;
+                }
+
+                return true;
+            }
+        });
+        DOMDocument document=  browser.getDocument();
+        ((InputElement) document.findElement(By.id("un"))).setValue(uid);
+        ((InputElement) document.findElement(By.id("pwd"))).setValue(pwd);
+        document.findElement(By.id("login_button")).click();
+        tool.waitUntil(new BrowserOperation() {
+            @Override
+            public boolean execute(Browser browser) {
+                JSValue href = browser.executeJavaScriptAndReturnValue(
+                        "document.location.href");
+               String str= href.asString().getStringValue();
+               if(str.indexOf("//www.yhd.com")>=0){
+                   return true;
+               }
+                return false;
+            }
+        });
+
+    }
+    public void logIn2(String uid, String pwd) throws Exception{
         String html = getResult("https://passport.yhd.com/passport/login_input.do", null, null);
         Document doc = Jsoup.parse(html);
         Elements captchaTokenElement = doc.select("#__yct_str__");
@@ -141,7 +187,7 @@ public class YhdUser extends CrawlerUser {
 
     public static void main(String[] args) throws Exception {
         YhdUser yhdUser = new YhdUser();
-        yhdUser.logIn("*******", "******");
+        yhdUser.logIn("****", "****");
     }
 
     String generateMixed(int d) {

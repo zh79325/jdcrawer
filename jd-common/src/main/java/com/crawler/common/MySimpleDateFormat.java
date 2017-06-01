@@ -1,4 +1,4 @@
-package com.crawler.jd;
+package com.crawler.common;
 
 import java.text.ParseException;
 import java.text.ParsePosition;
