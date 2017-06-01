@@ -84,7 +84,7 @@ public class JdUser  extends CrawlerUser {
         qrCode = loadQrCode();
     }
 
-    int MAX_SLEEP = 1000 * 60;
+    int MAX_SLEEP = 1000 * 60*5;
     int sleepTime = 0;
     int sleepIntevarl = 1000;
 
