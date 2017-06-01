@@ -47,7 +47,6 @@ public class JdMiaoShaService {
                                 it.remove();
                                 startedMap.remove(id);
                             }
-                            Thread.sleep(100);
                         } catch (Exception ex) {
                             try {
                                 Thread.sleep(100);
