@@ -94,8 +94,7 @@ public class YhdUser extends CrawlerUser {
         params.put("num", "1");
         params.put("_", new Date().getTime() + "");
         String result = getResult("https://cart.yhd.com/cart/opt/add.do", null, params);
-
-        gotoCard();
+        finishOrder();
     }
 
     private JSONObject getDetailParam(String html) {
@@ -108,8 +107,8 @@ public class YhdUser extends CrawlerUser {
         return JSONObject.parseObject(json);
     }
 
-    private void gotoCard() throws IOException {
-        getResult("http://cart.yhd.com/cart/cart.do",null,null);
+    private void finishOrder() throws IOException {
+       String html= getResult("http://buy.yhd.com/checkoutV3/index.do",null,null);
     }
 
 

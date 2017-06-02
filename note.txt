@@ -1,79 +1,51 @@
-_JdJrRiskClientStorage
-
-
-function td_collect_exe() {
-    _JdJrRiskClientCollectData = td_collect.collect();
-    (function() {
-        var f = _JdJrTdRiskFp.getData();
-        f.fingerprint = _JdJrTdRiskFpInfo;
-        (function(f, p, q) {
-            _JdJrRiskClientStorage.get("3AB9D23F7A4B3C9B", function(l) {
-                var t = {
-                    pin: _jdJrTdCommonsObtainPin(),
-                    oid: f,
-                    p: "https:" == document.location.protocol ? "s" : "h",
-                    fp: q
-                };
-                try {
-                    t.o = _CurrentPageUrl
-                } catch (r) {}
-                void 0 !== l && null  !== l && 0 < l.length && (_JdEid = l,
-                _eidFlag = !0);
-                "undefined" != typeof _JdEid && 0 < _JdEid.length && (p.eid = t.fc = _JdEid);
-                l = "?g=" + td_collect.tdencrypt(p);
-                try {
-                    t.t = jd_risk_token_id
-                } catch (r) {}
-                l += "&a=" + td_collect.tdencrypt(t);
-                jdJrTdsendCorsRequest(document.location.protocol + "//" + _JdJrTdRiskDomainName + "/fcf.html" + l, _JdJrRiskClientCollectData, l, function(f) {
-                    32 <= f.length && (_JdEid = f,
-                    _eidFlag = !0,
-                    _JdJrRiskClientStorage.set("3AB9D23F7A4B3C9B", f),
-                    _jdJrTdRelationEidPin(_JdEid),
-                    _JdJrReleaseResource())
-                })
-            })
-        })("string" === typeof orderId ? orderId : "", f, _JdJrTdRiskFpInfo)
-    })()
-}
-
-
-https://payrisk.com.crawer.jd.com/js/td.js
-
-
-riskId = https://payrisk.com.crawer.jd.com/y.html?v=0.6833678304683417&o=passport.com.crawer.jd.com/new/login.aspx
- _CurrentPageProtocol + "payrisk.com.crawer.jd.com/y.html?v=" + Math.random() + "&o=" + _CurrentPageUrl;
-
-var t={
-fp: "73716330cd2413eaccb3cb06c3b695e8"
-o: "passport.com.crawer.jd.com/new/login.aspx"
-oid: ""
-p: "s"
-pin: ""
-t: "N3EBGE37FOBCNITMGQN22DQEED4NINAFD5TUUFA3Y36CYQCR7Z2WILLAQITL2PUXYH4J2EHTXPS7Y"  // riskId
-}
-
-var p={
-addBehavior: false,
-browser: "applewebkit_chrome",
-browserVersion: "537.36",
-canvas: "a59aa6ade7d917aed046eeafba2c3042",
-colorDepth: 24,
-cpu: "unknown",
-fingerprint: "73716330cd2413eaccb3cb06c3b695e8",
-indexedDb: true,
-language: "zh-CN",
-localStorage: true,
-openDatabase: true,
-origin: "pc",
-os: "windows",
-osVersion: "9",
-platform: "Win32",
-plugins: "35077cfebf01e5aafe3ca68770439bce",
-screenResolution: "1050x1680",
-sessionStorage: true,
-timezoneOffset: -8,
-track: "unknown",
-userAgent: "4f6496c61a087bc685085dc33952f925",
-webglFp: "4e06a578d2a3cfd6793271537d55b280",
-}
+ jQuery.ajax({
+        url: "/checkoutV3/init/init.do",
+        data: {
+            cart2Checkbox: $("#cart2Checkbox").val(),
+            operateFlag: $("#operateFlag").val(),
+            cartSuppress: $("#cartSuppress").val(),
+            fastBuyFlag: $("#fastBuyFlag").val(),
+            returnUrl: $("#returnUrl").val(),
+            isMedicine: $("#isMedicine").val()
+        },
+        success: function(a) {
+            if (typeof (a) == "string") {
+                $(".mask_tcdiv,.loadingA").hide();
+                $(".mask_tcdiv,.loadingA").remove();
+                if (a.indexOf('http-equiv="refresh"') != -1) {
+                    gotracker("2", "session_timeout", null );
+                    alert("您的登录信息已经失效，页面将被跳转！");
+                    window.location = a.substr(a.indexOf("url=") + 4, a.lastIndexOf('"') - a.indexOf("url=") - 4);
+                    return
+                }
+                gotracker("2", "back_to_cart", null );
+                commBackCart();
+                return false
+            } else {
+                if (a && a.isOverload) {
+                    location.href = "${URLPrefix.shoping_yhd}/cms/view.do?topicId=22781";
+                    return false
+                }
+                if (a.currentStep == "CONFIRMING_RECEIVER") {
+                    products = a.productsMap;
+                    if (isNewContractPhone() && a.contractInfoDisplayVo) {
+                        globalOrder.contractInfoDisplayVo = a.contractInfoDisplayVo
+                    }
+                    refeshGoodsWithoutSplit(products)
+                }
+                $(".mask_tcdiv,.loadingA").hide();
+                $(".mask_tcdiv,.loadingA").remove();
+                if (a.rxFlag) {
+                    jQuery("#checkoutHeadStep").remove();
+                    jQuery("#checkoutMainTitle").text("填写核对预订信息");
+                    jQuery("#rxContactMobileDiv").show();
+                    jQuery(".btSubOrder1").text("提交需求");
+                    jQuery("#deliveryUI").remove();
+                    jQuery("#paymentUI").remove();
+                    jQuery("#invoiceUI").remove()
+                }
+                globalRender(a);
+                loadCheckoutHead(a);
+                loadAD()
+            }
+        }
