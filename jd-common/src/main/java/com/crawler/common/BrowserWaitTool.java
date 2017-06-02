@@ -14,7 +14,7 @@ public class BrowserWaitTool {
     static final long DEFAULT_INTERVAL = 100L;
 
    public void waitUntil(BrowserOperation operation, long interval) {
-        while (!operation.execute(browser)) {
+        while (!BrowserUtil.hasDocument(browser)||!operation.execute(browser)) {
             try {
                 Thread.sleep(interval);
             } catch (InterruptedException e) {

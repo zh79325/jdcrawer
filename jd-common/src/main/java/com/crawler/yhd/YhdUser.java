@@ -1,5 +1,6 @@
 package com.crawler.yhd;
 
+import com.alibaba.fastjson.JSONObject;
 import com.crawler.common.BrowserOperation;
 import com.crawler.common.BrowserUtil;
 import com.crawler.common.BrowserWaitTool;
@@ -15,6 +16,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.teamdev.jxbrowser.chromium.BrowserMouseEvent.MouseButtonType.PRIMARY;
 
@@ -76,16 +79,33 @@ public class YhdUser extends CrawlerUser {
     }
 
     public void addToCard(String itemId) throws IOException {
+
+        String html=getResult("http://item.yhd.com/item/"+itemId,null,null);
+        JSONObject detailparams=getDetailParam(html);
+
+        if(detailparams.containsKey("productId")){
+            itemId=detailparams.getLong("productId")+"";
+        }
         Map<String, String> params = new HashMap<String, String>();
 
         long t = new Random().nextInt(899999) + 100000;
         params.put("callback", "jQuery" + t);
-        params.put("productId", "itemId");
+        params.put("productId", itemId);
         params.put("num", "1");
         params.put("_", new Date().getTime() + "");
         String result = getResult("https://cart.yhd.com/cart/opt/add.do", null, params);
 
         gotoCard();
+    }
+
+    private JSONObject getDetailParam(String html) {
+        Pattern pattern=Pattern.compile("detailparams\\s*=\\s*(\\{.+?\\})",Pattern.DOTALL);
+        Matcher matcher=pattern.matcher(html);
+        if(!matcher.find()){
+            return null;
+        }
+        String json= matcher.group(1);
+        return JSONObject.parseObject(json);
     }
 
     private void gotoCard() throws IOException {
@@ -95,7 +115,8 @@ public class YhdUser extends CrawlerUser {
 
     public static void main(String[] args) throws Exception {
         YhdUser yhdUser = new YhdUser();
-        yhdUser.logIn("xxxxxx", "xxxxxx");
+        yhdUser.logIn("xxx", "xxx");
+        yhdUser.addToCard("61199936");
     }
 
 

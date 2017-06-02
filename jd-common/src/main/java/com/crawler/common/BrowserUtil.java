@@ -26,6 +26,12 @@ import static com.teamdev.jxbrowser.chromium.BrowserMouseEvent.MouseScrollType.*
  * Description:
  */
 public class BrowserUtil {
+
+    public static boolean hasDocument(Browser browser){
+        DOMDocument document = browser.getDocument();
+        DOMElement documentElement = document.getDocumentElement();
+        return documentElement!=null;
+    }
     public static BrowserView showBrowser(Browser browser) {
         BrowserView view = new BrowserView(browser);
 
