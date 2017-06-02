@@ -1,12 +1,22 @@
 package com.crawler.jd;
 
 import com.alibaba.fastjson.JSONObject;
+import com.crawler.common.BrowserOperation;
+import com.crawler.common.BrowserUtil;
+import com.crawler.common.BrowserWaitTool;
 import com.crawler.common.CrawlerUser;
 import com.crawler.jd.domain.items.JdItem;
 import com.crawler.jd.script.EncryptScript;
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.Cookie;
+import com.teamdev.jxbrowser.chromium.JSValue;
+import com.teamdev.jxbrowser.chromium.dom.By;
+import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
+import com.teamdev.jxbrowser.chromium.dom.internal.InputElement;
 import okhttp3.Headers;
 import okhttp3.Response;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -114,10 +124,57 @@ public class JdUser  extends CrawlerUser {
         return true;
     }
 
+    public static void main(String[] args) throws NoSuchMethodException, ScriptException, IOException {
+        JdUser user=new JdUser();
+        user.logIn("xxxxx","xxxxx");
+        user.addToCart("3995554");
+        System.out.println("buy success");
+    }
     public boolean logIn(String userName, String password) throws IOException, ScriptException, NoSuchMethodException {
-        Document doc = preLogIn();
+        browser.loadURL("https://passport.jd.com/new/login.aspx?ReturnUrl=https%3A%2F%2Fwww.jd.com%2F");
+        BrowserWaitTool tool=new BrowserWaitTool(browser);
+//        BrowserView browserView=  BrowserUtil.showBrowser(browser);
+
+        tool.waitUntil(new BrowserOperation() {
+            @Override
+            public boolean execute(Browser browser) {
+
+                DOMDocument document=  browser.getDocument();
+                eid=BrowserUtil.getValue(document,"eid");
+                fp=BrowserUtil.getValue(document,"sessionId");
+                if(StringUtils.isEmpty(eid)||StringUtils.isEmpty(fp)){
+                    return false;
+                }
+
+                return true;
+            }
+        });
+        DOMDocument document=  browser.getDocument();
+        ((InputElement) document.findElement(By.id("loginname"))).setValue(userName);
+        ((InputElement) document.findElement(By.id("nloginpwd"))).setValue(password);
+        document.findElement(By.id("loginsubmit")).click();
+        tool.waitUntil(new BrowserOperation() {
+            @Override
+            public boolean execute(Browser browser) {
+                JSValue href = browser.executeJavaScriptAndReturnValue(
+                        "document.location.href");
+                String str= href.asString().getStringValue();
+                if(str.indexOf("//www.jd.com")>=0){
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        List<Cookie> cookies= browser.getCookieStorage().getAllCookies();
+        for (Cookie cookie : cookies) {
+            cookieJar.addCookie(cookie);
+        }
+
+        getUserInfo();
         return true;
     }
+
 
     boolean validateToken(String token) throws IOException {
         Headers headers = _headers.newBuilder()
@@ -250,12 +307,12 @@ public class JdUser  extends CrawlerUser {
     }
 
 
-    void addToCart(JdItem item) throws IOException {
+    void addToCart(String itemId) throws IOException {
         Headers headers = _headers.newBuilder()
                 .removeAll("Accept-Encoding")
                 .add("Referer", JdConfig.MIAO_SHA_INDEX.getUrl())
                 .build();
-        String url = String.format("http://item.jd.com/%s.html", item.getId());
+        String url = String.format("http://item.jd.com/%s.html", itemId);
         String html = getResult(url, headers, null);
         Document doc = Jsoup.parse(html);
         Elements tags = doc.select("a#InitCartUrl");
@@ -265,10 +322,10 @@ public class JdUser  extends CrawlerUser {
                 .add("Referer", url)
                 .build();
         get(addToCart, headers, null);
-        orderInfo(item);
+        orderInfo(itemId);
     }
 
-    void orderInfo(JdItem item) throws IOException {
+    void orderInfo(String itemId) throws IOException {
         Map<String, String> params = new HashMap<>();
         params.put("rid", new Date().getTime() + "");
         String url = "http://trade.jd.com/shopping/order/getOrderInfo.action";
@@ -308,7 +365,7 @@ public class JdUser  extends CrawlerUser {
 
 
     public void buy(JdItem item) throws IOException {
-        addToCart(item);
+        addToCart(item.getId());
     }
 
     public void heartBeat() throws IOException {

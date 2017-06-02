@@ -1,7 +1,12 @@
 package com.crawler.common;
 
 import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.dom.By;
+import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
+import com.teamdev.jxbrowser.chromium.dom.DOMElement;
+import com.teamdev.jxbrowser.chromium.dom.internal.InputElement;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,5 +32,17 @@ public class BrowserUtil {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         return view;
+    }
+
+   public static String getValue(DOMDocument document, String id){
+        DOMElement element= document.findElement(By.id(id));
+        if(element==null){
+            return null;
+        }
+        String txt=((InputElement) element).getValue();
+        if(StringUtils.isEmpty(txt)){
+            return null;
+        }
+        return txt;
     }
 }

@@ -14,31 +14,21 @@ import java.util.*;
  * Description:
  */
 public class JdCookieJar implements CookieJar {
-    private final HashMap<String, List<Cookie>> cookieStore = new HashMap<String, List<Cookie>>();
     private final List<Cookie> _cookies = new ArrayList<Cookie>();
 
     public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-        cookieStore.put(url.host().toLowerCase(), cookies);
         this._cookies.addAll(cookies);
     }
 
     public List<Cookie> loadForRequest(HttpUrl url) {
-        if (1 == 0) {
-            List<Cookie> cookies = cookieStore.get(url.host().toLowerCase());
-            return cookies != null ? cookies : new ArrayList<Cookie>();
-        } else {
-            return _cookies;
-        }
+        return _cookies;
 
     }
 
     public String getValue(String name) {
-        for (Map.Entry<String, List<Cookie>> entry : cookieStore.entrySet()) {
-            List<Cookie> cookieList = entry.getValue();
-            for (Cookie cookie : cookieList) {
-                if (cookie.name().equals(name)) {
-                    return cookie.value();
-                }
+        for (Cookie cookie : _cookies) {
+            if (cookie.name().equals(name)) {
+                return cookie.value();
             }
         }
         return null;
@@ -60,6 +50,25 @@ public class JdCookieJar implements CookieJar {
             cookieBuilder.expiresAt(expire.getTime());
         }
         _cookies.add(cookie);
+    }
+
+    public void addCookie(com.teamdev.jxbrowser.chromium.Cookie cookie ) {
+
+        Cookie.Builder cookieBuilder = new Cookie.Builder()
+                .name(cookie.getName())
+                .value(cookie.getValue())
+                .domain(cookie.getDomain())
+                .expiresAt(cookie.getExpirationTime())
+                .path(cookie.getPath());
+        if(cookie.isHTTPOnly()){
+            cookieBuilder.httpOnly();
+        }
+        if(cookie.isSecure()){
+            cookieBuilder.secure();
+        }
+        Cookie cookies = cookieBuilder.build();
+
+        _cookies.add(cookies);
     }
 
 
