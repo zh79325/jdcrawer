@@ -65,7 +65,7 @@ public abstract class CrawlerUser {
     }
 
     public Response get(String url, Headers headers, Map<String, String> params) throws IOException {
-        HttpUrl httpUrl = getHttpUrl(url, params);
+        HttpUrl httpUrl = CrawlerHttpUtil.getHttpUrl(url, params);
         if (headers == null) {
             headers = this._headers;
         }
@@ -78,17 +78,6 @@ public abstract class CrawlerUser {
         return response;
     }
 
-    private HttpUrl getHttpUrl(String url, Map<String, String> params) {
-        HttpUrl httpUrl = HttpUrl.parse(url);
-        if (params != null) {
-            HttpUrl.Builder urlBuilder = httpUrl.newBuilder();
-            for (Map.Entry<String, String> entry : params.entrySet()) {
-                urlBuilder.addQueryParameter(entry.getKey(), entry.getValue());
-            }
-            httpUrl = urlBuilder.build();
-        }
-        return httpUrl;
-    }
 
     public String getResult(String url, Headers headers, Map<String, String> params) throws IOException {
         Response response = get(url, headers, params);
@@ -101,7 +90,7 @@ public abstract class CrawlerUser {
     }
 
     public Response post(String url, Headers headers, Map<String, String> params, Map<String, String> postBody) throws IOException {
-        HttpUrl httpUrl = getHttpUrl(url, params);
+        HttpUrl httpUrl = CrawlerHttpUtil.getHttpUrl(url, params);
         if (headers == null) {
             headers = this._headers;
         }
