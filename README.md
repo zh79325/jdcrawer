@@ -40,6 +40,7 @@ https://atom.io/
 ```$xslt
 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 ```
+![](resource/jdk.png)
 ### Maven
 ### NodeJS
 
@@ -51,6 +52,7 @@ http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.h
 ```$xslt
 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 ```
+![](resource/jdk.png)
 ### 执行命令
 ```$xslt
 java -jar jd-serverxxx.jar
