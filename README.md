@@ -1,5 +1,7 @@
 # Crawer
- 
+
+# 开发
+
 ## Version Update
 ### UpdateMajorVersion
 ```aidl
@@ -16,7 +18,7 @@ build-helper:parse-version versions:set -DnewVersion=${parsedVersion.majorVersio
 
 
 
-# 开发工具列表
+## 工具列表
 ### Intellij
  ### 下载地址
  ```$xslt
@@ -33,7 +35,7 @@ https://www.jetbrains.com/student/
 https://atom.io/
 ```
 
-# 开发环境要求
+## 环境要求
 ### Java 1.8
 ```$xslt
 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
@@ -42,10 +44,9 @@ http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.h
 ### NodeJS
 
 
-
+#
 # 使用
-
-# 环境要求
+## 环境要求
 ### Java 1.8
 ```$xslt
 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
