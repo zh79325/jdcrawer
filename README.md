@@ -33,12 +33,23 @@ https://www.jetbrains.com/student/
 https://atom.io/
 ```
 
-# 环境要求
+# 开发环境要求
 ### Java 1.8
+```$xslt
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+```
 ### Maven
 ### NodeJS
 
+
+
 # 使用
+
+# 环境要求
+### Java 1.8
+```$xslt
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+```
 ### 执行命令
 ```$xslt
 java -jar jd-serverxxx.jar
