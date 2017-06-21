@@ -38,3 +38,11 @@ https://atom.io/
 ### Maven
 ### NodeJS
 
+# 使用
+### 执行命令
+```$xslt
+java -jar jd-serverxxx.jar
+```
+### 在浏览器输入 localhost:8080 即可访问
+
+
