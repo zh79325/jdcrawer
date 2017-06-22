@@ -34,4 +34,11 @@ public class MySimpleDateFormat extends SimpleDateFormat {
         Date date= df.parse(source);
         return date;
     }
+
+    @Override
+    public Object parseObject(String source) throws ParseException {
+        return super.parseObject(source);
+    }
+
+
 }
