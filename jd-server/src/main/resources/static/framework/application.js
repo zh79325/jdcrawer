@@ -153,7 +153,7 @@ define(['angularAMD', 'default-routers',
                function (trans) {
                   $scope.current = trans.targetState().state();
                });
-            $transitions.onStart('TransitionService.onStart ',
+            $transitions.onStart({},
                function (trans) {});
          });
 
