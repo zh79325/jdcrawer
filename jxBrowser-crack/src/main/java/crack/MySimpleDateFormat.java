@@ -50,6 +50,9 @@ public class MySimpleDateFormat extends SimpleDateFormat {
 
     @Override
     public Object parseObject(String source) throws ParseException {
+        if("12-06-2017".equalsIgnoreCase(source)){
+            source="12-06-2216";
+        }
         return super.parseObject(source);
     }
 
