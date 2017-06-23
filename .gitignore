@@ -177,7 +177,6 @@ mcd-common/target/
 mcd-biz/target/
 
 
-node_modules/
 
 !nginx-1.9.9/logs
 nginx-1.9.9/logs/*
