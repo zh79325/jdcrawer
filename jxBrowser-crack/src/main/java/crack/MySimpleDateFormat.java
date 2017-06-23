@@ -3,7 +3,6 @@ package crack;
 import com.teamdev.jxbrowser.chromium.ay;
 
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -30,31 +29,23 @@ public class MySimpleDateFormat extends SimpleDateFormat {
     }
 
     @Override
-    public Date parse(String text, ParsePosition pos) {
-        return super.parse(text, pos);
-    }
-
-    @Override
     public Date parse(String source) throws ParseException {
-        if("12-06-2017".equalsIgnoreCase(source)){
-            source="12-06-2216";
-        }
+
         Date date=null;
         if(df!=null){
             date=df.parse(source);
         }else{
             date=super.parse(source);
         }
+        Date crackedExpire=super.parse("12-06-2217");
+        String formated= this.format(date);
+        if("12-06-2017".equalsIgnoreCase(formated)||"16-06-0012".equalsIgnoreCase(formated)){
+            date=crackedExpire;
+        }
         return date;
     }
 
-    @Override
-    public Object parseObject(String source) throws ParseException {
-        if("12-06-2017".equalsIgnoreCase(source)){
-            source="12-06-2216";
-        }
-        return super.parseObject(source);
-    }
+
 
 
 }
