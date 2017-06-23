@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>jd-crawer</artifactId>
+        <groupId>jd-crawer</groupId>
+        <version>1.0.1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>jxBrowser-crack</artifactId>
+
+    <dependencies>
+        <dependency>
+            <artifactId>com.teamdev.jxbrowser</artifactId>
+            <groupId>jxbrowser</groupId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${basedir}/lib/jxbrowser-6.9.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.teamdev.jxbrowser</groupId>
+            <artifactId>jxbrowser-win</artifactId>
+            <version>6.9</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.teamdev.jxbrowser</groupId>
+                    <artifactId>jxbrowser</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.teamdev.jxbrowser</groupId>
+            <artifactId>jxbrowser-linux32</artifactId>
+            <version>6.9</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.teamdev.jxbrowser</groupId>
+                    <artifactId>jxbrowser</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.teamdev.jxbrowser</groupId>
+            <artifactId>jxbrowser-linux64</artifactId>
+            <version>6.9</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.teamdev.jxbrowser</groupId>
+                    <artifactId>jxbrowser</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.teamdev.jxbrowser</groupId>
+            <artifactId>jxbrowser-mac</artifactId>
+            <version>6.9</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.teamdev.jxbrowser</groupId>
+                    <artifactId>jxbrowser</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+</project>

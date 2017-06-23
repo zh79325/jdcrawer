@@ -9,6 +9,7 @@
     <packaging>pom</packaging>
     <version>1.0.1</version>
     <modules>
+        <module>jxBrowser-crack</module>
         <module>jd-common</module>
         <module>jd-main</module>
         <module>jd-server</module>
@@ -30,6 +31,11 @@
             <dependency>
                 <groupId>jd-crawer</groupId>
                 <artifactId>jd-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jd-crawer</groupId>
+                <artifactId>jxBrowser-crack</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

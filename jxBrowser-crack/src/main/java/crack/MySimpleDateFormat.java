@@ -1,9 +1,12 @@
-package com.crawler.common;
+package crack;
+
+import com.teamdev.jxbrowser.chromium.ay;
 
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Author     : zh_zhou@Ctrip.com
@@ -18,12 +21,17 @@ public class MySimpleDateFormat extends SimpleDateFormat {
 
     public MySimpleDateFormat(SimpleDateFormat df){
         this.df=df;
+        SimpleDateFormat ss=  ay.a;
     }
 
+    public MySimpleDateFormat(String pattern, Locale locale) {
+        super(pattern, locale);
+        df=null;
+    }
 
     @Override
     public Date parse(String text, ParsePosition pos) {
-        return df.parse(text, pos);
+        return super.parse(text, pos);
     }
 
     @Override
@@ -31,7 +39,12 @@ public class MySimpleDateFormat extends SimpleDateFormat {
         if("12-06-2017".equalsIgnoreCase(source)){
             source="12-06-2216";
         }
-        Date date= df.parse(source);
+        Date date=null;
+        if(df!=null){
+            date=df.parse(source);
+        }else{
+            date=super.parse(source);
+        }
         return date;
     }
 
