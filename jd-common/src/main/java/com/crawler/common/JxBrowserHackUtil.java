@@ -1,7 +1,6 @@
 package com.crawler.common;
 
 import com.teamdev.jxbrowser.chromium.ay;
-import crack.MySimpleDateFormat;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -16,7 +15,7 @@ import java.text.SimpleDateFormat;
  */
 public class JxBrowserHackUtil {
 
-    static boolean hacked=true;
+    static boolean hacked=false;
 
     public static void hack() throws Exception {
         if(hacked){

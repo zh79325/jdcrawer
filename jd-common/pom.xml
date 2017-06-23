@@ -56,16 +56,16 @@
             <version>3.0.1</version>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>com.teamdev.jxbrowser</groupId>-->
-            <!--<artifactId>jxbrowser-cross-platform</artifactId>-->
-            <!--<version>6.9</version>-->
-            <!--<type>pom</type>-->
-        <!--</dependency>-->
         <dependency>
-            <groupId>jd-crawer</groupId>
-            <artifactId>jxBrowser-crack</artifactId>
+            <groupId>com.teamdev.jxbrowser</groupId>
+            <artifactId>jxbrowser-cross-platform</artifactId>
+            <version>6.9</version>
+            <type>pom</type>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>jd-crawer</groupId>-->
+            <!--<artifactId>jxBrowser-crack</artifactId>-->
+        <!--</dependency>-->
     </dependencies>
     <build>
         <resources>
@@ -73,20 +73,6 @@
                 <directory>${project.basedir}/src/main/resources</directory>
                 <filtering>false</filtering>
             </resource>
-            <!--<resource>-->
-                <!--<directory>${project.basedir}/../jxBrowser-crack/target/classes/com/teamdev/jxbrowser/chromium</directory>-->
-                <!--<includes>-->
-                    <!--<include>-->
-                        <!--ay.class-->
-                    <!--</include>-->
-                <!--</includes>-->
-                <!--<filtering>false</filtering>-->
-            <!--</resource>-->
-
-
-
-
-
         </resources>
     </build>
 </project>
