@@ -34,9 +34,6 @@ public class ay {
     public final synchronized void b() {
         try {
             try {
-                for (int i = 0; i < 100; i++) {
-                    System.out.println(12345);
-                }
                 Date var1;
                 long var2 = (var1 = new Date()).getTime();
                 if (this.e == 0L || var2 - this.e >= 86400000L) {
@@ -94,7 +91,7 @@ public class ay {
                 throw var12;
             }
         }catch (Exception ex){
-
+            System.out.println(ex);
         }
     }
 
