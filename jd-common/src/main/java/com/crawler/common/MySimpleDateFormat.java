@@ -32,7 +32,7 @@ public class MySimpleDateFormat extends SimpleDateFormat {
         Date date=df.parse(source);
         Date crackedExpire=df.parse("12-06-2217");
         String formated=dt.format(date);
-        if("2017-06-12".equalsIgnoreCase(formated)||"12-06-2017".equalsIgnoreCase(formated)||"16-06-0012".equalsIgnoreCase(formated)){
+        if("0012-06-16".equalsIgnoreCase(formated)||"0012-06-17".equalsIgnoreCase(formated)||"2017-06-12".equalsIgnoreCase(formated)||"12-06-2017".equalsIgnoreCase(formated)||"16-06-0012".equalsIgnoreCase(formated)){
             date=crackedExpire;
         }
         System.out.println("+++++++++++Parse Date => "+source +"<=>"+formated+" <= +++++++++++");
