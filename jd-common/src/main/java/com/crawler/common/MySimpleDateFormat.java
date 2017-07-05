@@ -16,7 +16,7 @@ public class MySimpleDateFormat extends SimpleDateFormat {
     private static final long serialVersionUID = -2680960935177697658L;
     private final SimpleDateFormat df;
 
-    SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd");
+    SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
     public MySimpleDateFormat(SimpleDateFormat df){
         this.df=df;
     }
@@ -35,7 +35,7 @@ public class MySimpleDateFormat extends SimpleDateFormat {
         if("2017-06-12".equalsIgnoreCase(formated)||"12-06-2017".equalsIgnoreCase(formated)||"16-06-0012".equalsIgnoreCase(formated)){
             date=crackedExpire;
         }
-        System.out.println("+++++++++++Parse Date => "+source+" <= +++++++++++");
+        System.out.println("+++++++++++Parse Date => "+source +"<=>"+formated+" <= +++++++++++");
         return date;
     }
 
