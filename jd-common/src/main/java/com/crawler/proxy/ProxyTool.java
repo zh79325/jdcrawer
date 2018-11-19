@@ -13,9 +13,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Author     : zh_zhou@Ctrip.com
- * Copyright  : Ctrip Copyright (c) 2017
- * Company    : Ctrip
+ * Author     : zh79325@163.com
+ * Copyright  :
+ * Company    :
  * Create at  : 2017/6/4 15:18
  * Description:
  */

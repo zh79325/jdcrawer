@@ -4,9 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Author     : zh_zhou@Ctrip.com
- * Copyright  : Ctrip Copyright (c) 2017
- * Company    : Ctrip
+ * Author     : zh79325@163.com
+ * Copyright  :
+ * Company    :
  * Create at  : 2017/5/14 14:08
  * Description:
  */

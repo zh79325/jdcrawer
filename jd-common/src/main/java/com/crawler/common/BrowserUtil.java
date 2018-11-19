@@ -19,9 +19,9 @@ import static com.teamdev.jxbrowser.chromium.BrowserMouseEvent.MouseEventType.*;
 import static com.teamdev.jxbrowser.chromium.BrowserMouseEvent.MouseScrollType.*;
 
 /**
- * Author     : zh_zhou@Ctrip.com
- * Copyright  : Ctrip Copyright (c) 2017
- * Company    : Ctrip
+ * Author     : zh79325@163.com
+ * Copyright  :
+ * Company    :
  * Create at  : 2017/6/1 23:47
  * Description:
  */

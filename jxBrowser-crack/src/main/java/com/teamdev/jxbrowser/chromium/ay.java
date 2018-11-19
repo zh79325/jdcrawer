@@ -1,9 +1,9 @@
 package com.teamdev.jxbrowser.chromium;
 
 /**
- * Author     : zh_zhou@Ctrip.com
- * Copyright  : Ctrip Copyright (c) 2017
- * Company    : Ctrip
+ * Author     : zh79325@163.com
+ * Copyright  :
+ * Company    :
  * Create at  : 2017/6/22 18:39
  * Description:
  */

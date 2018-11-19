@@ -23,9 +23,9 @@ import java.util.regex.Pattern;
 import static com.teamdev.jxbrowser.chromium.BrowserMouseEvent.MouseButtonType.PRIMARY;
 
 /**
- * Author     : zh_zhou@Ctrip.com
- * Copyright  : Ctrip Copyright (c) 2017
- * Company    : Ctrip
+ * Author     : zh79325@163.com
+ * Copyright  :
+ * Company    :
  * Create at  : 2017/5/23 9:33
  * Description:
  */

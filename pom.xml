@@ -159,20 +159,6 @@
             <id>teamdev</id>
             <url>http://maven.teamdev.com/repository/products</url>
         </repository>
-        <repository>
-            <id>ctrip</id>
-            <name>ctrip</name>
-            <releases>
-                <enabled>true</enabled>
-                <checksumPolicy>fail</checksumPolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <checksumPolicy>fail</checksumPolicy>
-            </snapshots>
-            <url>http://maven.dev.sh.ctripcorp.com:8081/nexus/content/groups/public</url>
-            <layout>default</layout>
-        </repository>
     </repositories>
 
     <build>

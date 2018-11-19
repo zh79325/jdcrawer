@@ -4,9 +4,9 @@ import com.crawler.jd.domain.JdGroup;
 import com.crawler.jd.domain.items.JdItem;
 
 /**
- * Author     : zh_zhou@Ctrip.com
- * Copyright  : Ctrip Copyright (c) 2017
- * Company    : Ctrip
+ * Author     : zh79325@163.com
+ * Copyright  :
+ * Company    :
  * Create at  : 2017/5/12 14:42
  * Description:
  */

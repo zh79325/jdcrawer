@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Author     : zh_zhou@Ctrip.com
- * Copyright  : Ctrip Copyright (c) 2017
- * Company    : Ctrip
+ * Author     : zh79325@163.com
+ * Copyright  :
+ * Company    :
  * Create at  : 2017/5/21 12:32
  * Description:
  */

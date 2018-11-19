@@ -3,9 +3,9 @@ package com.crawler.jd.domain.items;
 import java.util.Date;
 
 /**
- * Author     : zh_zhou@Ctrip.com
- * Copyright  : Ctrip Copyright (c) 2017
- * Company    : Ctrip
+ * Author     : zh79325@163.com
+ * Copyright  :
+ * Company    :
  * Create at  : 2017/5/12 13:07
  * Description:
  */

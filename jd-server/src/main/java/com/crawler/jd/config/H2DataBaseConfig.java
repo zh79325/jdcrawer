@@ -16,9 +16,9 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
- * Author     : zh_zhou@Ctrip.com
- * Copyright  : Ctrip Copyright (c) 2017
- * Company    : Ctrip
+ * Author     : zh79325@163.com
+ * Copyright  :
+ * Company    :
  * Create at  : 2017/5/19 18:11
  * Description:
  */

@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Author     : zh_zhou@Ctrip.com
- * Copyright  : Ctrip Copyright (c) 2017
- * Company    : Ctrip
+ * Author     : zh79325@163.com
+ * Copyright  :
+ * Company    :
  * Create at  : 2017/6/1 18:58
  * Description:
  */

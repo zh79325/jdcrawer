@@ -3,9 +3,9 @@ package com.crawler.common;
 import com.teamdev.jxbrowser.chromium.Browser;
 
 /**
- * Author     : zh_zhou@Ctrip.com
- * Copyright  : Ctrip Copyright (c) 2017
- * Company    : Ctrip
+ * Author     : zh79325@163.com
+ * Copyright  :
+ * Company    :
  * Create at  : 2017/6/1 23:25
  * Description:
  */
